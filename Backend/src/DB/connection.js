@@ -5,7 +5,7 @@ class DB {
 
     static open() {
         if (this.#db == undefined) {
-            this.#db = new sqlite3.Database('./ejemplo', sqlite3.OPEN_READWRITE | sqlite3.OPEN_FULLMUTEX, (err) => {
+            this.#db = new sqlite3.Database('../futbol.db', sqlite3.OPEN_READWRITE | sqlite3.OPEN_FULLMUTEX, (err) => {
                 if (err) {
                     console.error(err.message);        
                 } else {
