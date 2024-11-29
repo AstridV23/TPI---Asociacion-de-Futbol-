@@ -1,4 +1,3 @@
-
 import { useForm } from 'react-hook-form';
 import { 
   TextField, Button, Box, Paper, Typography, Select, MenuItem, FormHelperText, InputLabel, FormControl
@@ -84,43 +83,55 @@ function Torneo() {
               helperText={errorsTorneo.Nombre?.message}
             />
 
-            <TextField
-              type="date"
-              label="Fecha de inicio"
-              fullWidth
-              {...registerTorneo('Fecha_Inicio', { required: 'Este campo es requerido' })}
-              error={!!errorsTorneo.Fecha_Inicio}
-              helperText={errorsTorneo.Fecha_Inicio?.message}
-            />
+            <FormControl fullWidth error={!!errorsTorneo.Fecha_Inicio}>
+              <InputLabel shrink>Fecha de inicio</InputLabel>
+              <TextField
+                type="date"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                {...registerTorneo('Fecha_Inicio', { required: 'Este campo es requerido' })}
+                error={!!errorsTorneo.Fecha_Inicio}
+                helperText={errorsTorneo.Fecha_Inicio?.message}
+              />
+            </FormControl>
 
-            <TextField
-              type="date"
-              label="Fecha de finalización"
-              fullWidth
-              {...registerTorneo('Fecha_Fin', { required: 'Este campo es requerido' })}
-              error={!!errorsTorneo.Fecha_Fin}
-              helperText={errorsTorneo.Fecha_Fin?.message}
-            />
+            <FormControl fullWidth error={!!errorsTorneo.Fecha_Fin}>
+              <InputLabel shrink>Fecha de finalización</InputLabel>
+              <TextField
+                type="date"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                {...registerTorneo('Fecha_Fin', { required: 'Este campo es requerido' })}
+                error={!!errorsTorneo.Fecha_Fin}
+                helperText={errorsTorneo.Fecha_Fin?.message}
+              />
+            </FormControl>
 
-            <TextField
-              type="date"
-              label="Fecha inicio de inscripción"
-              fullWidth
-              {...registerTorneo('Fecha_Inicio_Inscripcion', { required: 'Este campo es requerido' })}
-              error={!!errorsTorneo.Fecha_Inicio_Inscripcion}
-              helperText={errorsTorneo.Fecha_Inicio_Inscripcion?.message}
-            />
+            <FormControl fullWidth error={!!errorsTorneo.Fecha_Inicio_Inscripcion}>
+              <InputLabel shrink>Fecha inicio de inscripción</InputLabel>
+              <TextField
+                type="date"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                {...registerTorneo('Fecha_Inicio_Inscripcion', { required: 'Este campo es requerido' })}
+                error={!!errorsTorneo.Fecha_Inicio_Inscripcion}
+                helperText={errorsTorneo.Fecha_Inicio_Inscripcion?.message}
+              />
+            </FormControl>
 
-            <TextField
-              type="date"
-              label="Fecha fin de inscripción"
-              fullWidth
-              {...registerTorneo('Fecha_Fin_Inscripcion', { required: 'Este campo es requerido' })}
-              error={!!errorsTorneo.Fecha_Fin_Inscripcion}
-              helperText={errorsTorneo.Fecha_Fin_Inscripcion?.message}
-            />
+            <FormControl fullWidth error={!!errorsTorneo.Fecha_Fin_Inscripcion}>
+              <InputLabel shrink>Fecha fin de inscripción</InputLabel>
+              <TextField
+                type="date"
+                fullWidth
+                InputLabelProps={{ shrink: true }}
+                {...registerTorneo('Fecha_Fin_Inscripcion', { required: 'Este campo es requerido' })}
+                error={!!errorsTorneo.Fecha_Fin_Inscripcion}
+                helperText={errorsTorneo.Fecha_Fin_Inscripcion?.message}
+              />
+            </FormControl>
 
-            <FormControl fullWidth error={!!errorsTorneo.Categoria}>
+            {/*<FormControl fullWidth error={!!errorsTorneo.Categoria}>
               <InputLabel>Categoría</InputLabel>
               <Select
                 {...registerTorneo('Categoria', { required: 'Debe seleccionar una categoría' })}
@@ -138,7 +149,7 @@ function Torneo() {
               <FormHelperText>
                 {errorsTorneo.Categoria?.message}
               </FormHelperText>
-            </FormControl>
+            </FormControl>*/}
 
             <Button 
               type="submit" 
@@ -154,7 +165,7 @@ function Torneo() {
       </Paper>
 
       {/* Formulario de categoría */}
-      <Paper elevation={3} sx={{ flex: 1, p: 3 }}>
+      {/* <Paper elevation={3} sx={{ flex: 1, p: 3 }}>
         <Typography variant="h1" align="center" sx={{ fontSize: '1.5rem', mb: 3 }}>
           Añadir una Categoría
         </Typography>
@@ -204,7 +215,7 @@ function Torneo() {
             </Button>
           </Box>
         </form>
-      </Paper>
+      </Paper> */}
     </Box>
   );
 }
