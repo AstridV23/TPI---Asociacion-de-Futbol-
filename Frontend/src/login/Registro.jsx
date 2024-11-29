@@ -28,6 +28,7 @@ function Registro() {
     const onSubmit = async (data) => {
         const transformedData = {
             ...data,
+            DNI: parseInt(data.DNI, 10), 
             FechaNacimiento: data.FechaNacimiento
         };
 
@@ -36,7 +37,7 @@ function Registro() {
         try {
             const response = await api.post("register_persona", formData);
 
-            if (response.status === 201) {
+            if (response.status === 201 || response.status === 200 ) {
                 navigate('/');
             }
         } catch (error) {

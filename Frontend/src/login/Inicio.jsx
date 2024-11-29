@@ -3,12 +3,14 @@ import { Box, TextField, Typography, Button } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../hooks/AuthContext";
 import { useNavigate } from "react-router-dom"; 
+import useAxios from '../hooks/useAxios'
 
 function Inicio() {
     const {register, handleSubmit, formState:{errors, isSubmitting}} = useForm();
 
     const { login} = useAuth();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const api = useAxios();
 
 
     const onSubmit = async (data) => {
