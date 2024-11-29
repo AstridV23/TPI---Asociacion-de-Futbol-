@@ -159,12 +159,15 @@ model Se_Compone {
 }
 
 model Juega {
-  DNI_Jugador  Int
-  Nro_Equipo   Int
-  Encuentro_Id Int
-  encuentro    Encuentro @relation(fields: [Encuentro_Id], references: [Encuentro_Id])
-  equipo       Equipo    @relation(fields: [Nro_Equipo], references: [Nro_Equipo])
-  jugador      Jugador   @relation(fields: [DNI_Jugador], references: [DNI_Jugador])
+  DNI_Jugador               Int
+  Nro_Equipo                Int
+  Encuentro_Id              Int
+  Cantidad_Goles_Del_Equipo Int
+  Asistencia                Int // 0 False, 1 TRUE
+
+  Jugador   Jugador   @relation(fields: [DNI_Jugador], references: [DNI_Jugador])
+  Equipo    Equipo    @relation(fields: [Nro_Equipo], references: [Nro_Equipo])
+  Encuentro Encuentro @relation(fields: [Encuentro_Id], references: [Encuentro_Id])
 
   @@id([DNI_Jugador, Nro_Equipo, Encuentro_Id])
 }
