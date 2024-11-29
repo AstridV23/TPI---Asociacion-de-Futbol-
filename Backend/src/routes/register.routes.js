@@ -73,6 +73,8 @@ router.post('/register_persona', async (req, res) => {
   });
 
 
+  
+
   /*router.get('/perfil', verifyToken, async (req, res) => {
     try {
       // Accede al usuario desde req.usuario que fue añadido por el middleware
