@@ -1,15 +1,19 @@
 import React from "react";
-import { Box, TextField } from "@mui/material";
+import { Box, TextField, Typography, Button } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/AuthContext";
+import { useNavigate } from "react-router-dom"; 
 
 function Inicio() {
     const {register, handleSubmit, formState:{errors, isSubmitting}} = useForm();
 
     const { login} = useAuth();
+    const navigate = useNavigate()
 
 
     const onSubmit = async (data) => {
+
+        navigate('inscripciones');
         // Aquí irá la lógica de inicio de sesión
         try {
             //const response = await axios.post("/api/auth/login", data);
@@ -102,6 +106,19 @@ function Inicio() {
             >
                 {isSubmitting ? "Iniciando..." : "Iniciar Sesión"}
             </button>
+
+            <Box sx={{ textAlign: 'center', mt: 2 }}>
+                <Typography variant="body2" color="text.secondary">
+                    ¿No tienes una cuenta?
+                </Typography>
+                <Button
+                    variant="text"
+                    onClick={() => navigate('/registro')}
+                    sx={{ mt: 1 }}
+                >
+                    Regístrate
+                </Button>
+            </Box>
         </Box>
     );
 }
