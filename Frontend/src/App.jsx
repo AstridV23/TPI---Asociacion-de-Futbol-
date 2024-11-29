@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Inicio from './login/inicio';
+import Inicio from './login/Inicio';
 import Registro from './login/Registro';
 import Jugadores from './vistas/Jugadores';
 import Encargado from './vistas/Encargado';
@@ -12,8 +12,8 @@ function App() {
     <>
       {/* <Header/> */}
       <Routes>
-        <Route  path='/' element={<Registro/>} />
-        <Route  path='/registro' element={<Inicio/>} />
+        <Route  path='/' element={<Inicio/>} />
+        <Route  path='/registro' element={<Registro/>} />
         <Route  path='/jugadores' element={<Jugadores/>} />
         <Route path='/encargado' element={<Encargado/>} />
       </Routes>

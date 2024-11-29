@@ -12,7 +12,26 @@ function Registro() {
     const passwordValue = watch("password");
 
     const onSubmit = async (data) => {
-        reset()
+
+        const { confirmPassword, ...formData } = transformedData;
+
+        try {
+            //const response = await axios.post("/api/auth/registerCliente", formData);
+            
+            if (response.status === 200) {
+                toast.success('Se creó su cuenta correctamente, inicie sesión');
+            }
+        } catch (error) {
+            if (!error?.response) {
+                setError("root", {
+                    message: "Error al intentar conectarse con el servidor",
+                });
+            } else {
+                setError("root", {
+                    message: "Error inesperado durante el registro",
+                });
+            }
+        }
     }
 
     return (
@@ -29,6 +48,10 @@ function Registro() {
                 padding: 2
             }}
         >
+            <h1 style={{ textAlign: 'center', color: 'black', margin: '0 0 20px 0' }}>
+                Regístrate
+            </h1>
+
             <TextField 
                 {...register("dni", { required: "DNI es necesario" })}
                 fullWidth
