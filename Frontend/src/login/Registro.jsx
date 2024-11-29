@@ -2,7 +2,7 @@ import React from "react";
 import { Box, TextField, FormControl, InputLabel, MenuItem, Select, Typography, Button } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import useAxios from "../hooks/useAxios";
 
 function Registro() {
     const navigate = useNavigate();
@@ -19,6 +19,8 @@ function Registro() {
             FechaNacimiento: ''
         }
     });
+
+    const api = useAxios();
     
 
     const passwordValue = watch("Contrasena");
@@ -32,7 +34,7 @@ function Registro() {
         const { confirmPassword, ...formData } = transformedData;
 
         try {
-            const response = await axios.post("register_persona", formData);
+            const response = await api.post("register_persona", formData);
 
             if (response.status === 201) {
                 navigate('/');
