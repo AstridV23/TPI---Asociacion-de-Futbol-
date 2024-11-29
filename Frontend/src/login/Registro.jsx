@@ -24,8 +24,8 @@ function Registro() {
         try {
             const response = await axios.post("register_persona", formData);
             
-            if (response.status === 200) {
-                toast.success('Se creó su cuenta correctamente, inicie sesión');
+            if (response.status === 201) {
+                navigate('/');
             }
         } catch (error) {
             if (!error?.response) {
