@@ -1,43 +1,46 @@
 import React, { createContext, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; 
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || null);
-  const [rol, setRol] = useState(localStorage.getItem('rol') ? parseInt(localStorage.getItem('rol'), 10) : 0);
-  const [idUsuario, setIdUsuario] = useState(localStorage.getItem('idUsuario') || null);
+  const [rol, setRol] = useState(localStorage.getItem('rol') ? parseInt(localStorage.getItem('rol'), 10) : "");
 
   // Función para iniciar sesión
-  const login = (userToken, userRol, userId, userName) => {
+  const login = (userToken, userRol) => {
     localStorage.setItem('token', userToken);
     localStorage.setItem('rol', userRol);
-    localStorage.setItem('idUsuario', userId);
-    localStorage.setItem('nombreUsuario', userName);
     setToken(userToken);
     setRol(userRol);
-    setIdUsuario(userId);
   };
 
   // Función para cerrar sesión
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('rol');
-    localStorage.removeItem('idUsuario');
-    localStorage.removeItem('nombreUsuario');
     setToken(null);
     setRol(0);
-    setIdUsuario(null);
   };
+
+  const esJugador =()=>{
+    return true;
+    //return false;
+  }
   
+  const esEncargado =()=>{
+    return false;
+    //return true;
+  }
 
   const value = {
     token,
     rol,
-    idUsuario,
     login,
     logout, 
-    hayUsuario: () => !!token,
+    hayUsuario: () => !token,
+    esEncargado,
+    esJugador
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

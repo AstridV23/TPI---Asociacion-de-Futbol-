@@ -1,22 +1,24 @@
 import React, { useState } from "react";
-import { Box, TextField, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Box, TextField, FormControl, InputLabel, MenuItem, Select, Typography, Button } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 function Registro() {
+    const navigate = useNavigate();
     const {register, handleSubmit, setError, watch, reset, control, formState:{errors, isSubmitting}} = useForm({
         defaultValues: {
             rol: '',
             fechaNacimiento: ''
         }
     });
-    const passwordValue = watch("password");
+    const passwordValue = watch("Contrasena");
 
     const onSubmit = async (data) => {
 
         const { confirmPassword, ...formData } = transformedData;
 
         try {
-            //const response = await axios.post("/api/auth/registerCliente", formData);
+            const response = await axios.post("register_persona", formData);
             
             if (response.status === 200) {
                 toast.success('Se creó su cuenta correctamente, inicie sesión');
@@ -53,7 +55,7 @@ function Registro() {
             </h1>
 
             <TextField 
-                {...register("dni", { required: "DNI es necesario" })}
+                {...register("DNI", { required: "DNI es necesario" })}
                 fullWidth
                 label="DNI" 
                 variant="outlined"
@@ -62,7 +64,7 @@ function Registro() {
             />
             
             <TextField 
-                {...register("nombre", { required: "Nombre es necesario" })}
+                {...register("Nombre", { required: "Nombre es necesario" })}
                 fullWidth
                 label="Nombre" 
                 variant="outlined"
@@ -71,7 +73,7 @@ function Registro() {
             />
 
             <TextField 
-                {...register("apellido", { required: "Apellido es necesario" })}
+                {...register("Apellido", { required: "Apellido es necesario" })}
                 fullWidth
                 label="Apellido" 
                 variant="outlined"
@@ -80,7 +82,7 @@ function Registro() {
             />
 
             <TextField 
-                {...register("direccion", { required: "Dirección es necesaria" })}
+                {...register("Direccion", { required: "Dirección es necesaria" })}
                 fullWidth
                 label="Direccion" 
                 variant="outlined"
@@ -90,17 +92,16 @@ function Registro() {
 
             <TextField 
                 type="date"
-                {...register("fechaNacimiento", { required: "Fecha de nacimiento es necesaria" })}
+                {...register("FechaNacimiento", { required: "Fecha de nacimiento es necesaria" })}
                 fullWidth
                 label="Fecha de Nacimiento"
                 variant="outlined"
-                InputLabelProps={{ shrink: true }}
                 error={!!errors.fechaNacimiento}
                 helperText={errors.fechaNacimiento?.message}
             />
 
             <Controller
-                name="rol"
+                name="Rol"
                 control={control}
                 rules={{ required: "Rol es necesario" }}
                 render={({ field }) => (
@@ -123,7 +124,7 @@ function Registro() {
             />
 
             <TextField 
-                {...register("password", { 
+                {...register("Contrasena", { 
                     required: "Contraseña es necesaria",
                     pattern: {
                         value: /^(?=.*[A-Za-z])(?=.*\d)[\w\W]{8,16}$/,
@@ -172,6 +173,19 @@ function Registro() {
             >
                 {isSubmitting ? "Guardando..." : "Registrar"}
             </button>
+
+            <Box sx={{ textAlign: 'center', mt: 2 }}>
+                <Typography variant="body2" color="text.secondary">
+                    ¿Ya tienes una cuenta?
+                </Typography>
+                <Button
+                    variant="text"
+                    onClick={() => navigate('/')}
+                    sx={{ mt: 1 }}
+                >
+                    Iniciar Sesión
+                </Button>
+            </Box>
         </Box>
     );
 }
