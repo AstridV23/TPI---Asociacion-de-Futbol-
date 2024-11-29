@@ -5,14 +5,16 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token') || null);
-  const [rol, setRol] = useState(localStorage.getItem('rol') ? parseInt(localStorage.getItem('rol'), 10) : "");
+  const [rol, setRol] = useState(localStorage.getItem('rol') || null);
+  const [dni, setDni] = useState(localStorage.getItem('dni') || null);
 
   // Función para iniciar sesión
-  const login = (userToken, userRol) => {
+  const login = (userToken, userRol, userDni) => {
     localStorage.setItem('token', userToken);
     localStorage.setItem('rol', userRol);
     setToken(userToken);
     setRol(userRol);
+    setDni(userDni);
   };
 
   // Función para cerrar sesión
