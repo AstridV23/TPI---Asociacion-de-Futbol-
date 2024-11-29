@@ -2,14 +2,12 @@ import { Router } from "express";
 import bcrypt from 'bcryptjs'
 import { PrismaClient } from "@prisma/client";
 import { createAccessToken } from "../libs/jwt.js";
-import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 
 const router = Router()
 const prisma = new PrismaClient()
 
 dotenv.config()
-const JWT_SECRET = process.env.TOKEN_SECRET
 
 router.post('/register_persona', async (req, res) => {
     try {
@@ -74,5 +72,25 @@ router.post('/register_persona', async (req, res) => {
     }
   });
 
+
+  /*router.get('/perfil', verifyToken, async (req, res) => {
+    try {
+      // Accede al usuario desde req.usuario que fue añadido por el middleware
+      const usuario = await prisma.persona.findUnique({
+        where: { id: req.usuario.id },
+        select: {
+          id: true,
+          DNI: true,
+          Nombre: true,
+          Apellido: true,
+          Rol: true
+        }
+      });
+  
+      res.json(usuario);
+    } catch (error) {
+      res.status(500).json({ error: 'Error al obtener el perfil' });
+    }
+  });*/
 
 export default router
