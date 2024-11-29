@@ -7,77 +7,86 @@ const prisma = new PrismaClient()
 router.post('/categoria', async (req, res) => {
     try {
         const { Tipo, Edad_Min, Edad_Max, Descripcion } = req.body;
-    
-        if (validationError) {
-          return handleError(validationError, 400);
-        }
 
-        if (!Tipo || typeof Edad_Min !== 'number' || typeof Edad_Max !== 'number') {
-            return res.status(400).json({error: "Faltan campos obligatorios"});
-          }
-          if (Edad_Max <= Edad_Min || Edad_Max === Edad_Min) {
+        console.log(req.body)
+
+        // Validación actualizada considerando Tipo como opcional
+        if (typeof Edad_Min !== 'number' || typeof Edad_Max !== 'number') {
+            return res.status(400).json({error: "Edad_Min y Edad_Max son obligatorios"});
+        }
+        
+        if (Edad_Max <= Edad_Min) {
             return res.status(400).json({error: "Datos de edad incorrectos"});
-          }
+        }
     
         const nuevaCategoria = await prisma.categoria.create({
-          Tipo,
-          Edad_Min,
-          Edad_Max,
-          Descripcion
+            data: {
+                ...(Tipo && { Tipo }), // Inclusión condicional de Tipo
+                Edad_Min,
+                Edad_Max,
+                ...(Descripcion && { Descripcion }) // Inclusión condicional de Descripcion
+            }
         });
+
+        res.status(201).json(nuevaCategoria)
     
       } catch (error) {
-        return res.status(500).json({error: "Error al crear una categoría"})
+        console.error('Error al crear categoría:', error);
+        return res.status(500).json({error: "Error al crear una categoría", detalle: error.message})
       }
 })
 
 router.get('/categoria', async (req, res) => {
     try {
-        const { Tipo } = req.body;// Obtenemos el parámetro "nombre" desde la URL
+        const { Tipo } = req.query;
         
-        // Si se proporciona un nombre, buscar una categoría específica
         if (Tipo) {
-          const categoria = await prisma.categoria.findUnique({
-            where: { Tipo },
-          });
-    
-          if (!categoria) {
-            return handleError(`No se encontró una categoría con el nombre "${Tipo}"`, 404);
-          }
-    
-          return NextResponse.json(categoria); // Devuelve la categoría encontrada
-        }
-    
-        // Si no se proporciona nombre, devolver todas las categorías
-        const categorias = await prisma.categoria.findMany();
-    
-        return NextResponse.json(categorias); // Devuelve todas las categorías
-      } catch (error) {
-        return handleError('Error al obtener las categorías', 500);
-      }
-})
-  
+            const categoria = await prisma.categoria.findUnique({
+                where: { Tipo },
+            });
 
-router.delete('categoria/:id',async (req, res) => {
-    try {
-      const categoria = await prisma.categoria.findUnique(req.params.Categoria_ID);
-      const nombre = categoria.Tipo;
-  
-      if (!nombre) {
-        return res.status(404).json({error: "Categoría no encontrada"});
-      }
-  
-      await prisma.categoria.delete({
-        where: { nombre },
-      });
-  
-      return NextResponse.json(
-        { message: `Categoría con nombre "${nombre}" eliminada exitosamente` },
-        { status: 200 }
-      );
-    } catch {
-        return res.status(500).json({error: "Error al eliminar la categoría"});
+            if (!categoria) {
+                return res.status(404).json({ error: `No se encontró una categoría con el nombre "${Tipo}"` });
+            }
+
+            return res.status(200).json(categoria);
+        }
+
+        const categorias = await prisma.categoria.findMany();
+        return res.status(200).json(categorias); 
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Error al obtener las categorías" });
     }
-  })
+});
+
+router.delete('/categoria/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const categoria = await prisma.categoria.findUnique({
+            where: { Categoria_Id: parseInt(id) },
+        });
+
+        if (!categoria) {
+            return res.status(404).json({ error: "Categoría no encontrada" });
+        }
+
+        const { Tipo } = categoria;
+
+        await prisma.categoria.delete({
+            where: { Categoria_Id: parseInt(id) },
+        });
+
+        return res.status(200).json({
+            message: `Categoría con nombre "${Tipo}" eliminada exitosamente`,
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Error al eliminar la categoría" });
+    }
+});
+
 
 export default router

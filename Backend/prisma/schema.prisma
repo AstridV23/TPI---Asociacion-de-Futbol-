@@ -10,9 +10,9 @@ datasource db {
 model Categoria {
   Categoria_Id           Int                      @id @default(autoincrement())
   Tipo                   String?
+  Descripcion            String?
   Edad_Min               Int
   Edad_Max               Int
-  Descripcion            String?
   equipos                Equipo[]
   Tiene_Torneo_Categoria Tiene_Torneo_Categoria[]
   torneos                Torneo[]                 @relation("CategoriaTorneos")
