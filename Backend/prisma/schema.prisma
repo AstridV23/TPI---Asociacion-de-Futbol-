@@ -11,6 +11,8 @@ model Categoria {
   Categoria_Id           Int                      @id @default(autoincrement())
   Tipo                   String?
   Descripcion            String?
+  Edad_Min               Int
+  Edad_Max               Int
   equipos                Equipo[]
   Tiene_Torneo_Categoria Tiene_Torneo_Categoria[]
   torneos                Torneo[]                 @relation("CategoriaTorneos")
@@ -43,7 +45,7 @@ model Torneo {
   Categoria_Id             Int
   Division_Id              Int
   DNI_Encargado            Int
-  Nombre                   String
+  Nombre                   String                   @unique
   Fecha_Inicio             String
   Fecha_Fin                String
   Fecha_Inicio_Inscripcion String
