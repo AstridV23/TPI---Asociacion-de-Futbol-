@@ -7,13 +7,17 @@ function Registro() {
     const navigate = useNavigate();
     const {register, handleSubmit, setError, watch, reset, control, formState:{errors, isSubmitting}} = useForm({
         defaultValues: {
-            rol: '',
-            fechaNacimiento: ''
+            Rol: '',
+            FechaNacimiento: ''
         }
     });
     const passwordValue = watch("Contrasena");
 
     const onSubmit = async (data) => {
+        const transformedData = {
+            ...data,
+            FechaNacimiento: new Date(data.FechaNacimiento).toISOString().split('T')[0]
+        };
 
         const { confirmPassword, ...formData } = transformedData;
 

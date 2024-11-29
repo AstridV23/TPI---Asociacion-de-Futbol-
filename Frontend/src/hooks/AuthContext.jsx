@@ -24,13 +24,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   const esJugador =()=>{
-    return true;
-    //return false;
+    //return true;
+    return false;
   }
   
   const esEncargado =()=>{
-    return false;
-    //return true;
+    //return false;
+    return true;
   }
 
   const value = {
