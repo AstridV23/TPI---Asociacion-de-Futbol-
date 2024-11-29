@@ -16,7 +16,7 @@ function Registro() {
     const onSubmit = async (data) => {
         const transformedData = {
             ...data,
-            FechaNacimiento: new Date(data.FechaNacimiento).toISOString().split('T')[0]
+            FechaNacimiento: data.FechaNacimiento
         };
 
         const { confirmPassword, ...formData } = transformedData;

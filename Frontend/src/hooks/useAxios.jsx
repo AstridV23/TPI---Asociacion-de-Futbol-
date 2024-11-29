@@ -7,7 +7,7 @@ const useAxios = (options = {}) => {
   const { token, logout } = useAuth();
   const { ignoreAuthError = false } = options;
 
-  const API_URL = "localhost:3000/api/"
+  const API_URL = "http://localhost:3000/api/"
 
   const axiosInstance = axios.create({
     
