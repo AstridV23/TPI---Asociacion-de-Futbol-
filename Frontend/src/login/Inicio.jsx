@@ -14,9 +14,15 @@ function Inicio() {
 
 
     const onSubmit = async (data) => {
+        const transformedData = {
+            ...data,
+            DNI: parseInt(data.DNI, 10)
+        };
+
+
         // Aquí irá la lógica de inicio de sesión
         try {
-            const response = await api.post("login_persona", data);
+            const response = await api.post("login_persona", transformedData);
             
             // Chequear si la estructura de la respuesta es la esperada
             if (response.status === 200 && response.data) {
