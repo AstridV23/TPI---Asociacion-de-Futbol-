@@ -1,16 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, TextField, FormControl, InputLabel, MenuItem, Select, Typography, Button } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Registro() {
     const navigate = useNavigate();
-    const {register, handleSubmit, setError, watch, reset, control, formState:{errors, isSubmitting}} = useForm({
+    const {
+        register,
+        handleSubmit,
+        setError,
+        watch,
+        control,
+        formState: { errors, isSubmitting }
+    } = useForm({
         defaultValues: {
             Rol: '',
             FechaNacimiento: ''
         }
     });
+    
+
     const passwordValue = watch("Contrasena");
 
     const onSubmit = async (data) => {
@@ -23,7 +33,7 @@ function Registro() {
 
         try {
             const response = await axios.post("register_persona", formData);
-            
+
             if (response.status === 201) {
                 navigate('/');
             }
@@ -38,11 +48,11 @@ function Registro() {
                 });
             }
         }
-    }
+    };
 
     return (
-        <Box 
-            component="form" 
+        <Box
+            component="form"
             onSubmit={handleSubmit(onSubmit)}
             sx={{
                 display: 'flex',
@@ -58,50 +68,49 @@ function Registro() {
                 Regístrate
             </h1>
 
-            <TextField 
+            <TextField
                 {...register("DNI", { required: "DNI es necesario" })}
                 fullWidth
-                label="DNI" 
+                label="DNI"
                 variant="outlined"
-                error={!!errors.dni}
-                helperText={errors.dni?.message}
+                error={!!errors.DNI}
+                helperText={errors.DNI?.message}
             />
-            
-            <TextField 
+
+            <TextField
                 {...register("Nombre", { required: "Nombre es necesario" })}
                 fullWidth
-                label="Nombre" 
+                label="Nombre"
                 variant="outlined"
-                error={!!errors.nombre}
-                helperText={errors.nombre?.message}
+                error={!!errors.Nombre}
+                helperText={errors.Nombre?.message}
             />
 
-            <TextField 
+            <TextField
                 {...register("Apellido", { required: "Apellido es necesario" })}
                 fullWidth
-                label="Apellido" 
+                label="Apellido"
                 variant="outlined"
-                error={!!errors.apellido}
-                helperText={errors.apellido?.message}
+                error={!!errors.Apellido}
+                helperText={errors.Apellido?.message}
             />
 
-            <TextField 
+            <TextField
                 {...register("Direccion", { required: "Dirección es necesaria" })}
                 fullWidth
-                label="Direccion" 
+                label="Dirección"
                 variant="outlined"
-                error={!!errors.direccion}
-                helperText={errors.direccion?.message}
+                error={!!errors.Direccion}
+                helperText={errors.Direccion?.message}
             />
 
-            <TextField 
+            <TextField
                 type="date"
                 {...register("FechaNacimiento", { required: "Fecha de nacimiento es necesaria" })}
                 fullWidth
-                label="Fecha de Nacimiento"
                 variant="outlined"
-                error={!!errors.fechaNacimiento}
-                helperText={errors.fechaNacimiento?.message}
+                error={!!errors.FechaNacimiento}
+                helperText={errors.FechaNacimiento?.message}
             />
 
             <Controller
@@ -109,26 +118,23 @@ function Registro() {
                 control={control}
                 rules={{ required: "Rol es necesario" }}
                 render={({ field }) => (
-                    <FormControl fullWidth error={!!errors.rol}>
+                    <FormControl fullWidth error={!!errors.Rol}>
                         <InputLabel>Rol</InputLabel>
-                        <Select
-                            {...field}
-                            label="Rol"
-                        >
+                        <Select {...field} label="Rol">
                             <MenuItem value="persona">Encargado</MenuItem>
                             <MenuItem value="jugador">Jugador</MenuItem>
                         </Select>
-                        {errors.rol && (
+                        {errors.Rol && (
                             <span style={{ color: '#d32f2f', fontSize: '0.75rem', marginTop: '3px', marginLeft: '14px' }}>
-                                {errors.rol.message}
+                                {errors.Rol.message}
                             </span>
                         )}
                     </FormControl>
                 )}
             />
 
-            <TextField 
-                {...register("Contrasena", { 
+            <TextField
+                {...register("Contrasena", {
                     required: "Contraseña es necesaria",
                     pattern: {
                         value: /^(?=.*[A-Za-z])(?=.*\d)[\w\W]{8,16}$/,
@@ -137,33 +143,33 @@ function Registro() {
                 })}
                 fullWidth
                 type="password"
-                label="Contraseña" 
+                label="Contraseña"
                 variant="outlined"
-                error={!!errors.password}
-                helperText={errors.password?.message}
+                error={!!errors.Contrasena}
+                helperText={errors.Contrasena?.message}
             />
 
-            <TextField 
-                {...register("confirmPassword", { 
+            <TextField
+                {...register("confirmPassword", {
                     required: "Confirme su contraseña",
                     validate: value => value === passwordValue || "Las contraseñas no coinciden"
                 })}
                 fullWidth
                 type="password"
-                label="Confirmar contraseña" 
+                label="Confirmar contraseña"
                 variant="outlined"
                 error={!!errors.confirmPassword}
                 helperText={errors.confirmPassword?.message}
             />
 
             {errors.root && (
-                <div style={{color: 'red', textAlign: 'center', margin: '10px 0'}}>
+                <div style={{ color: 'red', textAlign: 'center', margin: '10px 0' }}>
                     {errors.root.message}
                 </div>
             )}
-            
-            <button 
-                type="submit" 
+
+            <button
+                type="submit"
                 disabled={isSubmitting}
                 style={{
                     padding: '10px 20px',
