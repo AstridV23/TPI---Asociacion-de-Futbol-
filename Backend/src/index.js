@@ -3,6 +3,7 @@ import cors from "cors";
 
 import registerRoutes from "./routes/register.routes.js"
 import loginRoutes from "./routes/login.routes.js"
+import torneoRoutes from "./routes/torneo.routes.js"
 
 
 const app = express()
@@ -19,6 +20,7 @@ app.use(
 
 app.use("/api", registerRoutes)
 app.use("/api", loginRoutes)
+app.use("/api", torneoRoutes)
 
 app.listen(3000)
 console.log("server o port: ",3000)

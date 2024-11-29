@@ -43,7 +43,7 @@ model Torneo {
   Categoria_Id             Int
   Division_Id              Int
   DNI_Encargado            Int
-  Nombre                   String
+  Nombre                   String                   @unique
   Fecha_Inicio             String
   Fecha_Fin                String
   Fecha_Inicio_Inscripcion String
