@@ -14,20 +14,17 @@ function Inicio() {
 
 
     const onSubmit = async (data) => {
-
-        navigate('inscripciones');
         // Aquí irá la lógica de inicio de sesión
         try {
-            //const response = await axios.post("/api/auth/login", data);
+            const response = await api.post("login_persona", data);
             
             // Chequear si la estructura de la respuesta es la esperada
             if (response.status === 200 && response.data) {
-              const { accessToken, usuarioLogueado } = response.data;
-              const idRole = usuarioLogueado.roles[0].idRole;
-              const idUsuario = usuarioLogueado.idUsuario;
+              const { DNI, Rol } = response.data;
   
               // Guarda el token y el rol en el contexto usando el hook useAuth
-              login(accessToken, idRole, idUsuario);
+              login(Rol, DNI);
+              navigate('/inscripciones');
               
             
             } else {
@@ -69,22 +66,22 @@ function Inicio() {
             </h1>
 
             <TextField 
-                {...register("dni", { required: "DNI es necesario" })}
+                {...register("DNI", { required: "DNI es necesario" })}
                 fullWidth
                 label="DNI" 
                 variant="outlined"
-                error={!!errors.dni}
-                helperText={errors.dni?.message}
+                error={!!errors.DNI}
+                helperText={errors.DNI?.message}
             />
 
             <TextField 
-                {...register("password", { required: "Contraseña es necesaria" })}
+                {...register("Contrasena", { required: "Contraseña es necesaria" })}
                 fullWidth
                 type="password"
                 label="Contraseña" 
                 variant="outlined"
-                error={!!errors.password}
-                helperText={errors.password?.message}
+                error={!!errors.Contrasena}
+                helperText={errors.Contrasena?.message}
             />
 
             {errors.root && (

@@ -4,43 +4,38 @@ import { useNavigate } from 'react-router-dom';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem('token') || null);
+  const [dni, setDni] = useState(localStorage.getItem('dni') ? parseInt(localStorage.getItem('dni'), 10) : 0);
   const [rol, setRol] = useState(localStorage.getItem('rol') || null);
-  const [dni, setDni] = useState(localStorage.getItem('dni') || null);
 
   // Función para iniciar sesión
-  const login = (userToken, userRol, userDni) => {
-    localStorage.setItem('token', userToken);
+  const login = ( userRol, userDni) => {
     localStorage.setItem('rol', userRol);
-    setToken(userToken);
     setRol(userRol);
     setDni(userDni);
   };
 
   // Función para cerrar sesión
   const logout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('dni');
     localStorage.removeItem('rol');
     setToken(null);
-    setRol(0);
+    setDni(null);
   };
 
   const esJugador =()=>{
-    //return true;
-    return false;
+    return rol == 'jugador' || rol =='Jugador';
   }
   
   const esEncargado =()=>{
-    //return false;
-    return true;
+    return rol == 'persona' || rol =='Persona';
   }
 
   const value = {
-    token,
+    dni,
     rol,
     login,
     logout, 
-    hayUsuario: () => !token,
+    hayUsuario: () => !rol,
     esEncargado,
     esJugador
   };
