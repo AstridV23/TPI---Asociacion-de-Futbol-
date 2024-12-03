@@ -16,41 +16,42 @@ function Inicio() {
     const onSubmit = async (data) => {
         // Aquí irá la lógica de inicio de sesión
 
-        const transformedData = {
-            ...data,
-            DNI: parseInt(data.DNI, 10)
-        };
+        // const transformedData = {
+        //     ...data,
+        //     DNI: parseInt(data.DNI, 10)
+        // };
 
-        try {
-            const response = await api.post("login", transformedData);
+        // try {
+        //     const response = await api.post("login", transformedData);
             
-            // Chequear si la estructura de la respuesta es la esperada
-            if (response.status === 200 && response.data) {
-              const { DNI, Rol } = response.data;
+        //     // Chequear si la estructura de la respuesta es la esperada
+        //     if (response.status === 200 && response.data) {
+        //       const { DNI, Rol } = response.data;
   
-              // Guarda el token y el rol en el contexto usando el hook useAuth
-              login(Rol, DNI);
-              navigate('/inscripciones');
+        //       // Guarda el token y el rol en el contexto usando el hook useAuth
+        //       login(Rol, DNI);
+        //       navigate('/inscripciones');
               
             
-            } else {
-              throw new Error('Respuesta inesperada del servidor');
-            }
+        //     } else {
+        //       throw new Error('Respuesta inesperada del servidor');
+        //     }
         
-          } catch (error) {
-            // Verifica si el error es de red o falta de respuesta
-            if (!error?.response) {
-              setError("root", {
-                message: "Error al intentar conectarse con el servidor",
-              });
-            }
-            else {
-              // Muestra el error inesperado durante la autenticación
-              setError("root", {
-                message: "Error inesperado durante el inicio de sesión",
-              });
-            }
-          }
+        //   } catch (error) {
+        //     // Verifica si el error es de red o falta de respuesta
+        //     if (!error?.response) {
+        //       setError("root", {
+        //         message: "Error al intentar conectarse con el servidor",
+        //       });
+        //     }
+        //     else {
+        //       // Muestra el error inesperado durante la autenticación
+        //       setError("root", {
+        //         message: "Error inesperado durante el inicio de sesión",
+        //       });
+        //     }
+        //   }
+        navigate('/inscripciones')
     }
 
     return (

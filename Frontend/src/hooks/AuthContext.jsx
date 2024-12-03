@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
   // Función para iniciar sesión
   const login = ( userRol, userDni) => {
     localStorage.setItem('rol', userRol);
+    localStorage.setItem('dni', userDni);
     setRol(userRol);
     setDni(userDni);
   };
@@ -18,7 +19,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('dni');
     localStorage.removeItem('rol');
-    setToken(null);
+    setRol(null);
     setDni(null);
   };
 
