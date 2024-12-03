@@ -60,7 +60,7 @@ CREATE TABLE Torneo (
 
 -- Creación Equipo
 CREATE TABLE Equipo ( 
-    Nro_Equipo INTEGER PRIMARY KEY NOT NULL, 
+    Nro_Equipo INTEGER PRIMARY KEY AUTOINCREMENT, 
     Nombre TEXT, 
     DT TEXT, 
     Division_Id INTEGER, 
