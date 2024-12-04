@@ -137,11 +137,27 @@ function Registro() {
             />
 
             <TextField
+                {...register("Email", {
+                    required: "Email es necesario",
+                    pattern: {
+                        value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                        message: "Email inválido"
+                    }
+                })}
+                fullWidth
+                type="email"
+                label="Email"
+                variant="outlined"
+                error={!!errors.Email}
+                helperText={errors.Email?.message}
+            />
+
+            <TextField
                 {...register("Contrasena", {
                     required: "Contraseña es necesaria",
                     pattern: {
-                        value: /^(?=.*[A-Za-z])(?=.*\d)[\w\W]{8,16}$/,
-                        message: "Debe tener entre 8 y 16 caracteres, al menos una letra y un número"
+                        value: /^(?=.*[A-Za-z])(?=.*\d)[\w\W]{4,16}$/,
+                        message: "Debe tener entre 4 y 16 caracteres, al menos una letra y un número"
                     }
                 })}
                 fullWidth

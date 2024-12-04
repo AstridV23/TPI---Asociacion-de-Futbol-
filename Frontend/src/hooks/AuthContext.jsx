@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
 
   const esJugador =()=>{
     return rol == 'jugador' || rol =='Jugador';
+    //return true;
   }
   
   const esEncargado =()=>{

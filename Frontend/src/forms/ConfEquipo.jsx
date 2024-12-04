@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useAuth } from '../hooks/AuthContext';
 import useAxios from '../hooks/useAxios';
-import CardJugador from '../componentes/CardJugador';
+import CardJugador from '../componentes/CardJugador'; 
 import { Box, Typography, Container } from '@mui/material';
 
 function ConfEquipo() {

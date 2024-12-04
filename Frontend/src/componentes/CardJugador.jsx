@@ -8,10 +8,10 @@ function CardJugador({ Apellido, Nombre, Dni_Jugador, Nro_socio }) {
 
     const eliminar = async () => {
         try {
-            const response = await api.post(`eliminarJugador/${Dni_Jugador}`);
+            const response = await api.post(`rechazar/${Dni_Jugador}`);
             if (response.status === 200) {
                 setEliminado(true);
-            }
+            } 
         } catch (error) {
             console.error('Error al eliminar jugador:', error);
         }

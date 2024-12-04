@@ -4,7 +4,7 @@ import { useAuth } from './hooks/AuthContext';
 import Inicio from './login/Inicio';
 import Registro from './login/Registro'; 
 import Principal from './vistas/Principal';
-import Torneo from './inscripciones/Torneo';
+
 
 function App() {
   const {hayUsuario} = useAuth();

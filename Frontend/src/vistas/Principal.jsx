@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {TabContext, TabList,TabPanel } from '@mui/lab';
 import { Button, Tab , Box} from '@mui/material';
-import Jugador from '../inscripciones/Jugador';
-import Equipo from '../inscripciones/Equipo'; 
-import ConfEquipo from '../inscripciones/ConfEquipo';
+import Jugador from '../forms/Jugador';
+import Equipo from '../forms/Equipo'; 
+import ConfEquipo from '../forms/ConfEquipo';
 import { useAuth } from '../hooks/AuthContext';
 
 
@@ -33,7 +33,7 @@ function Principal() {
                 <Box sx={{ width: '80%' }}>
                     <TabList 
                         onChange={handleChange} 
-                        aria-label="lab API tabs example"
+                        aria-label="asociasion fulbito"
                         sx={{ 
                             minHeight: '48px',
                             '& .MuiTab-root': {
