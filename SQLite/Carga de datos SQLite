@@ -1,0 +1,77 @@
+-- INSERTANDO DATOS --
+
+-- PERSONA
+INSERT INTO Persona (DNI, FechaNacimiento, Direccion, Apellido, Nombre, Rol, Contrasena, Email) VALUES
+(20345678, '1995-04-12', 'Av. Principal 123, Rosario', 'González', 'Juan', 'Jugador', 'pass123', 'juan.gonzalez@mail.com'),
+(31456789, '1980-11-23', 'Calle Secundaria 45, Buenos Aires', 'Pérez', 'María', 'Arbitro', 'arbitro456', 'maria.perez@mail.com'),
+(27456987, '2003-06-07', 'Av. Siempre Viva 742, Springfield', 'Rodríguez', 'Carlos', 'Jugador', 'futbol789', 'carlos.rodriguez@mail.com'),
+(39567890, '1975-02-15', 'Calle Los Olivos 21, Mendoza', 'Fernández', 'Lucía', NULL, 'admin123', 'lucia.fernandez@mail.com'),
+(21654321, '1990-09-30', 'Boulevard Sol 67, Córdoba', 'López', 'Ana', 'Arbitro', 'arbi123', 'ana.lopez@mail.com'),
+(32876543, '1985-01-14', 'Ruta 3 Km 15, Rosario', 'Martínez', 'Luis', 'Jugador', 'jugador001', 'luis.martinez@mail.com'),
+(29456732, '2000-08-22', 'Av. La Estrella 900, Córdoba', 'Gómez', 'Sofía', NULL, 'guest123', 'sofia.gomez@mail.com'),
+(24567891, '1998-03-11', 'Calle Las Flores 202, Mendoza', 'Díaz', 'Federico', 'Jugador', 'gol123', 'federico.diaz@mail.com'),
+(38765432, '1992-05-25', 'Av. Libertad 321, Rosario', 'Romero', 'Laura', 'Arbitro', 'arbitro001', 'laura.romero@mail.com'),
+(25346781, '1997-12-09', 'Calle San Martín 100, Buenos Aires', 'Ruiz', 'Andrés', NULL, 'admin789', 'andres.ruiz@mail.com');
+
+SELECT * FROM Persona WHERE persona.Rol = 'Jugador';
+SELECT * FROM Persona WHERE persona.Rol = 'Arbitro';
+SELECT * FROM Persona;
+
+-- ARBITRO
+INSERT INTO Arbitro (DNI_Arbitro, TieneCertificacion, NivelExperiencia) VALUES
+(31456789, 1, 8), -- María Pérez
+(21654321, 0, 5), -- Ana López
+(38765432, 1, 7); -- Laura Romero
+
+SELECT * FROM Arbitro;
+
+-- JUGADOR
+INSERT INTO Jugador (DNI_Jugador, Nro_Socio, Nro_Equipo, Telefono, Foto) VALUES
+(20345678, 1001, NULL, '3415551234', NULL), -- Juan González
+(27456987, 1002, NULL, '3415555678', NULL), -- Carlos Rodríguez
+(32876543, 1003, NULL, '3415558765', NULL), -- Luis Martínez
+(24567891, 1004, NULL, '3415554321', NULL); -- Federico Díaz
+
+SELECT * FROM Jugador;
+
+-- CANCHA
+INSERT INTO Cancha (Direccion, Nombre) VALUES
+('Av. Siempre Viva 123, Springfield', 'Estadio Springfield'),
+('Calle Fútbol 456, Rosario', 'La Bombonerita'),
+('Boulevard Sol y Sombra 789, Buenos Aires', 'Arena del Sur'),
+('Ruta Nacional 3, Km 42, Córdoba', 'El Gigante de Córdoba'),
+('Av. Las Estrellas 1011, Mendoza', 'Estadio Los Andes');
+
+SELECT * FROM Cancha;
+
+-- CATEGORIA
+INSERT INTO Categoria (Tipo, Descripcion, Min_Edad, Max_Edad) VALUES
+('Infantil', 'Categoría para niños pequeños que están iniciando en el fútbol.', 6, 12),
+('Juvenil', 'Categoría para adolescentes que buscan desarrollar habilidades competitivas.', 13, 18),
+('Sub-20', 'Categoría para jugadores jóvenes que están a punto de entrar en el fútbol profesional.', 19, 20),
+('Adultos', 'Categoría general para jugadores mayores de 20 años.', 21, 40),
+('Veteranos', 'Categoría para jugadores mayores que aún quieren competir a nivel recreativo.', 41, 60);
+
+SELECT * FROM Categoria;
+
+-- DIVISION
+INSERT INTO Division (Tipo) VALUES
+('Primera División'),
+('Segunda División'),
+('Tercera División'),
+('División Juvenil'),
+('División Amateur');
+
+SELECT * FROM Division;
+
+-- EQUIPO
+INSERT INTO Equipo (Nombre, DT, Division_Id, DNI_Representante, Categoria_Id) VALUES
+('Club Atlético Rosario', 'José García', 1, 20345678, 4), -- Juan González, Adulto
+('Deportivo Mendoza', 'Carlos Ramírez', 2, 27456987, 3), -- Carlos Rodríguez, Sub-20
+('Córdoba Fútbol Club', 'Miguel Sánchez', 3, 32876543, 4), -- Luis Martínez, Adulto
+('Atlético Buenos Aires', 'Santiago Pérez', 4, 24567891, 4); -- Federico Díaz, Adulto
+
+SELECT * FROM Equipo;
+
+
+

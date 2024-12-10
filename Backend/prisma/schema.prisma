@@ -8,202 +8,172 @@ datasource db {
 }
 
 model Categoria {
-  Categoria_Id           Int                      @id @default(autoincrement())
-  Tipo                   String?
-  Descripcion            String?
-  Edad_Min               Int
-  Edad_Max               Int
-  equipos                Equipo[]
-  Tiene_Torneo_Categoria Tiene_Torneo_Categoria[]
-  torneos                Torneo[]                 @relation("CategoriaTorneos")
-
-  @@index([Categoria_Id])
+  Categoria_Id  Int    @id @default(autoincrement())
+  Tipo          String
+  Descripcion   String
+  Min_Edad      Int
+  Max_Edad      Int
+  Torneo        Torneo[]
+  Equipo        Equipo[]
 }
 
 model Division {
-  Division_Id       Int                     @id @default(autoincrement())
-  Tipo              String?
-  equipos           Equipo[]
-  torneo_divisiones Tiene_Torneo_Division[]
-  torneos           Torneo[]                @relation("DivisionTorneos")
-}
-
-model Persona {
-  DNI             Int      @id
-  FechaNacimiento String?
-  Direccion       String?
-  Apellido        String
-  Nombre          String
-  Rol             String
-  Contrasena      String
-  equipos         Equipo[]
-  torneos         Torneo[] @relation("EncargadoTorneos")
-}
-
-model Torneo {
-  Torneo_ID                Int                      @id @default(autoincrement())
-  Categoria_Id             Int
-  Division_Id              Int
-  DNI_Encargado            Int
-  Nombre                   String                   @unique
-  Fecha_Inicio             String
-  Fecha_Fin                String
-  Fecha_Inicio_Inscripcion String
-  Fecha_Fin_Inscripcion    String
-  se_compone               Se_Compone[]
-  tiene_torneo_categoria   Tiene_Torneo_Categoria[]
-  tiene_torneo_division    Tiene_Torneo_Division[]
-  encargado                Persona                  @relation("EncargadoTorneos", fields: [DNI_Encargado], references: [DNI])
-  division                 Division                 @relation("DivisionTorneos", fields: [Division_Id], references: [Division_Id])
-  categoria                Categoria                @relation("CategoriaTorneos", fields: [Categoria_Id], references: [Categoria_Id])
-}
-
-model Equipo {
-  Nro_Equipo        Int            @id @default(autoincrement())
-  Nombre            String?
-  DT                String?
-  Division_Id       Int?
-  DNI_Representante Int?
-  Categoria_Id      Int?
-  representante     Persona?       @relation(fields: [DNI_Representante], references: [DNI])
-  categoria         Categoria?     @relation(fields: [Categoria_Id], references: [Categoria_Id])
-  division          Division?      @relation(fields: [Division_Id], references: [Division_Id])
-  juega             Juega[]
-  jugadores         Jugador[]
-  pertenece         Pertenece[]
-  jugador_hace      jugador_hace[]
-}
-
-model Jugador {
-  DNI_Jugador  Int            @id @default(autoincrement())
-  Nro_Socio    Int?
-  Nro_Equipo   Int?
-  Telefono     String?
-  Foto         Bytes?
-  Infraccion   Infraccion[]
-  juega        Juega[]
-  equipo       Equipo?        @relation(fields: [Nro_Equipo], references: [Nro_Equipo])
-  pertenece    Pertenece[]
-  jugador_hace jugador_hace[]
+  Division_Id   Int    @id @default(autoincrement())
+  Tipo          String
+  Torneo        Torneo[]
+  Equipo        Equipo[]
 }
 
 model Arbitro {
-  DNI_Arbitro        Int          @id @default(autoincrement())
-  TieneCertificacion Boolean
-  NivelExperiencia   Int?
-  encuentros         Encuentro[]
-  infracciones       Infraccion[]
+  DNI_Arbitro   Int    @id
+  TieneCertificacion Int
+  NivelExperiencia Int
+  Encuentro      Encuentro[]
+  Infraccion    Infraccion[]
+}
+
+model Persona {
+  DNI           Int    @id
+  FechaNacimiento String
+  Direccion     String
+  Apellido      String
+  Nombre        String
+  Rol           String?
+  Contrasena    String
+  Email         String
+  Equipo        Equipo[]
+  Jugador       Jugador[]
+  Torneo        Torneo[]
 }
 
 model Cancha {
-  Cancha_Id  Int         @id @default(autoincrement())
-  Direccion  String?
-  Nombre     String?
-  encuentros Encuentro[]
+  Cancha_Id     Int    @id @default(autoincrement())
+  Direccion     String
+  Nombre        String
+  Encuentro     Encuentro[]
 }
 
-model Fixture {
-  Fixture_Id      Int          @id @default(autoincrement())
-  Cantidad_Ruedas Int?
-  ruedas          Rueda[]
-  se_compone      Se_Compone[]
+model Torneo {
+  Torneo_ID          Int      @id @default(autoincrement())
+  Categoria_Id       Int
+  Division_Id        Int
+  DNI_Encargado      Int
+  Nombre             String
+  Fecha_Inicio       String
+  Fecha_Fin          String
+  Fecha_Inicio_Inscripcion String
+  Fecha_Fin_Inscripcion   String
+  Cant_ruedas        Int
+  Categoria          Categoria @relation(fields: [Categoria_Id], references: [Categoria_Id])
+  Division           Division  @relation(fields: [Division_Id], references: [Division_Id])
+  Persona            Persona   @relation(fields: [DNI_Encargado], references: [DNI])
+  Rueda             Rueda[]
+  Participa         Participa[]
 }
 
-model Encuentro {
-  Encuentro_Id Int            @id @default(autoincrement())
-  DNI_Arbitro  Int?
-  Cancha_Id    Int?
-  Fecha        String
-  Hora         String
-  cancha       Cancha?        @relation(fields: [Cancha_Id], references: [Cancha_Id])
-  arbitro      Arbitro?       @relation(fields: [DNI_Arbitro], references: [DNI_Arbitro])
-  infracciones Infraccion[]
-  juega        Juega[]
-  se_compone   Se_Compone[]
-  jugador_hace jugador_hace[] @relation("JugadorHaceEncuentro")
+model Equipo {
+  Nro_Equipo        Int      @id @default(autoincrement())
+  Nombre            String
+  DT                String
+  Division_Id       Int
+  DNI_Representante Int
+  Categoria_Id      Int
+  Division          Division @relation(fields: [Division_Id], references: [Division_Id])
+  Persona           Persona  @relation(fields: [DNI_Representante], references: [DNI])
+  Categoria         Categoria @relation(fields: [Categoria_Id], references: [Categoria_Id])
+  Jugador           Jugador[]
+  Juega             Juega[]
+  Participa         Participa[]
 }
 
-model Tiene_Torneo_Division {
-  Torneo_ID   Int
-  Division_Id Int
-  division    Division @relation(fields: [Division_Id], references: [Division_Id])
-  torneo      Torneo   @relation(fields: [Torneo_ID], references: [Torneo_ID])
+model Jugador {
+  DNI_Jugador   Int
+  Nro_Socio     Int
+  Nro_Equipo    Int?
+  Telefono      String
+  Foto          Bytes?
+  Equipo        Equipo?  @relation(fields: [Nro_Equipo], references: [Nro_Equipo])
+  Persona       Persona @relation(fields: [DNI_Jugador], references: [DNI])
+  EncuentroGol  Hace_Gol[]
+  Infraccion    Infraccion[]
+  Juega         Juega[]
 
-  @@id([Torneo_ID, Division_Id])
-}
-
-model Tiene_Torneo_Categoria {
-  Torneo_ID    Int
-  Categoria_Id Int
-  categoria    Categoria @relation(fields: [Categoria_Id], references: [Categoria_Id])
-  torneo       Torneo    @relation(fields: [Torneo_ID], references: [Torneo_ID])
-
-  @@id([Torneo_ID, Categoria_Id])
+  @@id([DNI_Jugador, Nro_Socio])
 }
 
 model Rueda {
+  Rueda_id   Int    @id @default(autoincrement())
+  Torneo_id  Int
   Nro_Rueda  Int
-  Fixture_Id Int
-  fixture    Fixture @relation(fields: [Fixture_Id], references: [Fixture_Id])
-
-  @@id([Nro_Rueda, Fixture_Id])
+  Torneo     Torneo @relation(fields: [Torneo_id], references: [Torneo_ID])
+  Fecha_Torneo Fecha_Torneo[]
 }
 
-model Se_Compone {
-  Torneo_ID    Int
-  Fixture_Id   Int
-  Encuentro_Id Int
-  encuentro    Encuentro @relation(fields: [Encuentro_Id], references: [Encuentro_Id])
-  fixture      Fixture   @relation(fields: [Fixture_Id], references: [Fixture_Id])
-  torneo       Torneo    @relation(fields: [Torneo_ID], references: [Torneo_ID])
+model Fecha_Torneo {
+  Fecha_id  Int    @id @default(autoincrement())
+  Nro_fecha Int
+  Date      String
+  Rueda_id  Int
+  Rueda     Rueda  @relation(fields: [Rueda_id], references: [Rueda_id])
+  Encuentro Encuentro[]
+}
 
-  @@id([Torneo_ID, Fixture_Id, Encuentro_Id])
+model Encuentro {
+  Encuentro_Id Int     @id @default(autoincrement())
+  DNI_Arbitro  Int
+  Cancha_Id    Int
+  Hora         String
+  Fecha_id     Int
+  Arbitro      Arbitro @relation(fields: [DNI_Arbitro], references: [DNI_Arbitro])
+  Cancha       Cancha  @relation(fields: [Cancha_Id], references: [Cancha_Id])
+  Fecha_Torneo Fecha_Torneo @relation(fields: [Fecha_id], references: [Fecha_id])
+  Juega        Juega[]
+  HaceGol      Hace_Gol[]
+  Infraccion   Infraccion[]
 }
 
 model Juega {
-  DNI_Jugador               Int
-  Nro_Equipo                Int
-  Encuentro_Id              Int
-  Cantidad_Goles_Del_Equipo Int
-  Asistencia                Int // 0 False, 1 TRUE
-
-  Jugador   Jugador   @relation(fields: [DNI_Jugador], references: [DNI_Jugador])
-  Equipo    Equipo    @relation(fields: [Nro_Equipo], references: [Nro_Equipo])
-  Encuentro Encuentro @relation(fields: [Encuentro_Id], references: [Encuentro_Id])
-
-  @@id([DNI_Jugador, Nro_Equipo, Encuentro_Id])
-}
-
-model Pertenece {
-  DNI_Jugador Int
-  Nro_Equipo  Int
-  equipo      Equipo  @relation(fields: [Nro_Equipo], references: [Nro_Equipo])
-  jugador     Jugador @relation(fields: [DNI_Jugador], references: [DNI_Jugador])
-
-  @@id([DNI_Jugador, Nro_Equipo])
-}
-
-model jugador_hace {
-  DNI_Jugador  Int
-  Encuentro_Id Int
   Nro_Equipo   Int
-  gol          Boolean
-  momento      String?
-  equipo       Equipo    @relation(fields: [Nro_Equipo], references: [Nro_Equipo])
-  encuentro    Encuentro @relation("JugadorHaceEncuentro", fields: [Encuentro_Id], references: [Encuentro_Id])
-  jugador      Jugador   @relation(fields: [DNI_Jugador], references: [DNI_Jugador])
+  Encuentro_Id Int
+  DNI_Jugador  Int
+  Nro_Socio    Int
+  Equipo       Equipo    @relation(fields: [Nro_Equipo], references: [Nro_Equipo])
+  Encuentro    Encuentro @relation(fields: [Encuentro_Id], references: [Encuentro_Id])
+  Jugador      Jugador   @relation(fields: [DNI_Jugador, Nro_Socio], references: [DNI_Jugador, Nro_Socio])
 
-  @@id([DNI_Jugador, Encuentro_Id, Nro_Equipo])
+  @@id([Nro_Equipo, Encuentro_Id, DNI_Jugador, Nro_Socio])
+}
+
+model Hace_Gol {
+  DNI_Jugador Int
+  Nro_Socio   Int
+  Encuentro_Id Int
+  Momento     String
+  Jugador     Jugador @relation(fields: [DNI_Jugador, Nro_Socio], references: [DNI_Jugador, Nro_Socio])
+  Encuentro   Encuentro @relation(fields: [Encuentro_Id], references: [Encuentro_Id])
+
+  @@id([DNI_Jugador, Nro_Socio, Encuentro_Id])
 }
 
 model Infraccion {
-  Infraccion_id Int       @id @default(autoincrement())
+  Infraccion_id Int  @id @default(autoincrement())
   Encuentro_Id  Int
-  Minuto        Int
+  Momento       Int
   Tipo          String
   DNI_Jugador   Int
+  Nro_Socio     Int
   DNI_Arbitro   Int
-  arbitro       Arbitro   @relation(fields: [DNI_Arbitro], references: [DNI_Arbitro])
-  jugador       Jugador   @relation(fields: [DNI_Jugador], references: [DNI_Jugador])
-  encuentro     Encuentro @relation(fields: [Encuentro_Id], references: [Encuentro_Id])
+  Encuentro     Encuentro @relation(fields: [Encuentro_Id], references: [Encuentro_Id])
+  Jugador       Jugador   @relation(fields: [DNI_Jugador, Nro_Socio], references: [DNI_Jugador, Nro_Socio])
+  Arbitro       Arbitro   @relation(fields: [DNI_Arbitro], references: [DNI_Arbitro])
+}
+
+model Participa {
+  Torneo_id   Int
+  Nro_Equipo  Int
+  Puntos      Int
+  Torneo      Torneo @relation(fields: [Torneo_id], references: [Torneo_ID])
+  Equipo      Equipo @relation(fields: [Nro_Equipo], references: [Nro_Equipo])
+
+  @@id([Torneo_id, Nro_Equipo])
 }
