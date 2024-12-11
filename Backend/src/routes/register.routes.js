@@ -9,6 +9,7 @@ const prisma = new PrismaClient()
 
 dotenv.config()
 
+// crea una persona
 router.post('/register_persona', async (req, res) => {
     try {
       const { DNI, FechaNacimiento, Direccion, Apellido, Nombre, Rol, Contrasena } = req.body;
@@ -70,29 +71,62 @@ router.post('/register_persona', async (req, res) => {
   
       res.status(500).json({ error: 'Error interno del servidor' });
     }
-  });
+});
 
+  // registra un jugador
+router.post('/register_jugador', async (req, res) => {
 
-  
+});
 
-  /*router.get('/perfil', verifyToken, async (req, res) => {
-    try {
-      // Accede al usuario desde req.usuario que fue añadido por el middleware
-      const usuario = await prisma.persona.findUnique({
-        where: { id: req.usuario.id },
-        select: {
-          id: true,
-          DNI: true,
-          Nombre: true,
-          Apellido: true,
-          Rol: true
+// trae todas las personas
+router.get('/personas', async (req, res) => {
+  try {
+
+      const personas = await prisma.persona.findMany();
+      return res.status(200).json(personas); 
+
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Error al obtener las personas" });
+  }
+});
+
+// trae todos los jugadores
+router.get('/jugadores', async (req, res) => {
+  try {
+
+      const jugadores = await prisma.persona.findMany(
+        {
+          where: {
+            Rol: 'Jugador'
+          }
         }
-      });
-  
-      res.json(usuario);
-    } catch (error) {
-      res.status(500).json({ error: 'Error al obtener el perfil' });
-    }
-  });*/
+      );
+      return res.status(200).json(jugadores); 
+
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Error al obtener los jugadores" });
+  }
+});
+
+// trae todos los arbitros
+router.get('/arbitros', async (req, res) => {
+  try {
+
+      const jugadores = await prisma.persona.findMany(
+        {
+          where: {
+            Rol: 'Arbitro',
+          }
+        }
+      );
+      return res.status(200).json(jugadores); 
+
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Error al obtener los arbitros" });
+  }
+});
 
 export default router

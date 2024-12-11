@@ -4,6 +4,7 @@ import { Router } from "express";
 const router = Router()
 const prisma = new PrismaClient()
 
+// crea una nueva categoria
 router.post('/categoria', async (req, res) => {
     try {
         const { Tipo, Edad_Min, Edad_Max, Descripcion } = req.body;
@@ -36,6 +37,7 @@ router.post('/categoria', async (req, res) => {
       }
 })
 
+// trae todas las categorias
 router.get('/categoria', async (req, res) => {
     try {
         const { Tipo } = req.query;
@@ -61,6 +63,7 @@ router.get('/categoria', async (req, res) => {
     }
 });
 
+// elimina una categoria
 router.delete('/categoria/:id', async (req, res) => {
     try {
         const { id } = req.params;
