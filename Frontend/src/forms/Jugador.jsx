@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, TextField, FormControl, InputLabel, MenuItem, Select, Typography, Button } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import useAxios from "../hooks/useAxios";
@@ -19,15 +19,24 @@ function Jugador() {
 
     useEffect(() => {
         const fetchEquipos = async () => {
+            const dni_jugador = dni; 
             try {
-                const response = await api.get("equipos_mostrar");
-                setEquipos(response.data);
+                const response = await api.get(`equipos_compatibles`, {
+                    params: { dni_jugador } 
+                });
+                setEquipos(response.data); // Setea los equipos si no hay error
             } catch (error) {
-                console.error("Error al cargar equipos:", error);
+                if (error.response && error.response.status === 404) {
+                    console.error("No existen equipos correspondientes para tu edad.");
+                } else {
+                    console.error("Error al cargar equipos:", error);
+                }
             }
         };
+    
         fetchEquipos();
-    }, );
+    }, [dni]); // Asegúrate de que se ejecute cuando cambie el DNI
+    
 
     const onSubmit = async (data) => {
         const formData = {
@@ -48,6 +57,7 @@ function Jugador() {
             setError("root", {
                 message: "Error al registrar jugador"
             });
+            console.error("Error al registrar al jugador:", error);
         }
     };
 
@@ -76,7 +86,11 @@ function Jugador() {
                 render={({ field }) => (
                     <FormControl fullWidth error={!!errors.Nro_equipo}>
                         <InputLabel>Equipo</InputLabel>
-                        <Select {...field} label="Equipo">
+                        <Select
+                            {...field} // Esto conecta el campo con el controlador de react-hook-form
+                            label="Equipo"
+                            defaultValue={field.value} // Asegura que el valor seleccionado sea el valor del equipo
+                        >
                             {equipos.map((equipo) => (
                                 <MenuItem key={equipo.Nro_equipo} value={equipo.Nro_equipo}>
                                     {`${equipo.Nombre} (Equipo ${equipo.Nro_equipo})`}

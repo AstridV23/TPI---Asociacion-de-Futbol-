@@ -12,7 +12,7 @@ dotenv.config()
 // crea una persona
 router.post('/register_persona', async (req, res) => {
     try {
-      const { DNI, FechaNacimiento, Direccion, Apellido, Nombre, Rol, Contrasena } = req.body;
+      const { DNI, FechaNacimiento, Direccion, Apellido, Nombre, Rol, Contrasena, Email } = req.body;
   
       // Validación básica de campos requeridos
       if (!DNI || !Apellido || !Nombre || !Contrasena) {
@@ -38,6 +38,7 @@ router.post('/register_persona', async (req, res) => {
           Apellido,
           Nombre,
           Rol,
+          Email,
           Contrasena: passwordHash
         }
       });
@@ -74,7 +75,7 @@ router.post('/register_persona', async (req, res) => {
 });
 
   // registra un jugador
-  router.post('/register_jugador', async (req, res) => {
+router.post('/registrar_jugador', async (req, res) => {
     try {
         // Extraer los datos del cuerpo de la solicitud
         const { DNI_Jugador, Nro_Socio, Nro_Equipo, Telefono } = req.body;
@@ -135,7 +136,6 @@ router.post('/register_persona', async (req, res) => {
         res.status(500).json({ error: 'Hubo un error al registrar el jugador.' });
     }
 });
-
 
 // trae todas las personas
 router.get('/personas', async (req, res) => {

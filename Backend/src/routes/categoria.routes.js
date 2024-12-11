@@ -38,7 +38,7 @@ router.post('/categoria', async (req, res) => {
 })
 
 // trae todas las categorias
-router.get('/categoria', async (req, res) => {
+router.get('/categorias', async (req, res) => {
     try {
         const { Tipo } = req.query;
         

@@ -43,6 +43,65 @@ router.post('/equipo', async (req, res) => {
     }
 });
 
+// trae los equipos compatibles
+router.get('/equipos_compatibles', async (req, res) => {
+    const { dni_jugador } = req.query;
+
+    if (!dni_jugador) {
+        return res.status(400).json({ error: 'El parámetro DNI_Jugador es obligatorio.' });
+    }
+
+    try {
+        // Buscar a la persona por su DNI
+        const persona = await prisma.persona.findUnique({
+            where: { DNI: parseInt(dni_jugador) },
+            select: { FechaNacimiento: true }, // Obtener solo la fecha de nacimiento
+        });
+
+        if (!persona) {
+            return res.status(404).json({ error: 'No se encontró una persona con ese DNI.' });
+        }
+
+        // Calcular la edad actual del jugador
+        const fechaNacimiento = new Date(persona.FechaNacimiento);
+        const hoy = new Date();
+        const edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+
+        // Ajustar si el cumpleaños aún no ocurrió este año
+        const cumpleanosPasado =
+            hoy.getMonth() > fechaNacimiento.getMonth() ||
+            (hoy.getMonth() === fechaNacimiento.getMonth() && hoy.getDate() >= fechaNacimiento.getDate());
+        const edadReal = cumpleanosPasado ? edad : edad - 1;
+
+        // Buscar la categoría correspondiente según la edad
+        const categoria = await prisma.categoria.findFirst({
+            where: {
+                Min_Edad: { lte: edadReal },
+                Max_Edad: { gte: edadReal },
+            },
+        });
+
+        if (!categoria) {
+            return res.status(404).json({ error: 'No se encontró una categoría compatible para la edad del jugador.' });
+        }
+
+        // Buscar los equipos asociados a la categoría encontrada
+        const equipos = await prisma.equipo.findMany({
+            where: { Categoria_Id: categoria.Categoria_Id },
+        });
+
+        if (equipos.length === 0) {
+            return res.status(404).json({ error: 'No existen equipos correspondientes para tu edad.' });
+        }
+
+        // Responder con los equipos compatibles
+        res.status(200).json(equipos);
+    } catch (error) {
+        console.error("Error al obtener equipos compatibles:", error);
+        res.status(500).json({ error: 'Error al obtener equipos compatibles.' });
+    }
+});
+
 // busca por id de categoria
 // ej: http://localhost:3000/api/equipos?categoriaId=3
 router.get('/equipos', async (req, res) => {
@@ -102,5 +161,8 @@ router.get('/equipos_mostrar', async (req, res) => {
     }
 });
 
+router.put('/confirmar_jugador', async (req, res) => {
+
+});
 
 export default router
