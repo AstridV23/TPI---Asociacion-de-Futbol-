@@ -7,7 +7,6 @@ const prisma = new PrismaClient()
 // crea un equipo
 router.post('/equipo', async (req, res) => {
     try {
-        // Extraer los datos del cuerpo de la solicitud
         const { Nombre, DT, Division_Id, DNI_Representante, Categoria_Id } = req.body;
 
         // Validar campos obligatorios
@@ -15,9 +14,34 @@ router.post('/equipo', async (req, res) => {
             return res.status(400).json({ error: 'Faltan campos obligatorios.' });
         }
 
+        // Verificar que la división existe
+        const divisionExiste = await prisma.division.findUnique({
+            where: { Division_Id: Division_Id }
+        });
+        if (!divisionExiste) {
+            return res.status(404).json({ error: 'La división especificada no existe.' });
+        }
+
+        // Verificar que el representante existe
+        const representanteExiste = await prisma.persona.findUnique({
+            where: { DNI: DNI_Representante }
+        });
+        
+        if (!representanteExiste) {
+            return res.status(404).json({ error: 'El representante especificado no existe.' });
+        }
+
+        // Verificar que la categoría existe
+        const categoriaExiste = await prisma.categoria.findUnique({
+            where: { Categoria_Id: Categoria_Id }
+        });
+        if (!categoriaExiste) {
+            return res.status(404).json({ error: 'La categoría especificada no existe.' });
+        }
+
         // Verificar si ya existe un equipo con el mismo nombre
-        const equipoExistente = await prisma.equipo.findUnique({
-            where: { Nombre },
+        const equipoExistente = await prisma.equipo.findFirst({
+            where: { Nombre }
         });
 
         if (equipoExistente) {
@@ -35,7 +59,6 @@ router.post('/equipo', async (req, res) => {
             },
         });
 
-        // Responder con el equipo creado
         res.status(201).json(nuevoEquipo);
     } catch (error) {
         console.error(error);
