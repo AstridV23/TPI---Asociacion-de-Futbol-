@@ -219,6 +219,7 @@ router.get('/equipo_jugadores', async (req, res) => {
     }
 });
 
+
 router.put('/confirmar_jugador', async (req, res) => {
 
 });
