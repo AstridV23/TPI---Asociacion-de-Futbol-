@@ -161,6 +161,64 @@ router.get('/equipos_mostrar', async (req, res) => {
     }
 });
 
+// trae todos los jugadores de un equipo buscado por un dni de representante
+router.get('/equipo_jugadores', async (req, res) => {
+    const { dni_representante } = req.query;
+
+    // Validar el parámetro recibido
+    if (!dni_representante) {
+        return res.status(400).json({ error: 'El parámetro dni_representante es obligatorio.' });
+    }
+
+    try {
+        // Buscar el primer equipo por DNI_Representante
+        const equipo = await prisma.equipo.findFirst({
+            where: { DNI_Representante: parseInt(dni_representante) },
+            select: {
+                Nro_Equipo: true, // Obtener el número de equipo
+                Nombre: true,     // Opcional: incluir el nombre del equipo
+            },
+        });
+
+        if (!equipo) {
+            return res.status(404).json({ error: 'No se encontró un equipo para este representante.' });
+        }
+
+        // Buscar jugadores asociados al equipo
+        const jugadores = await prisma.jugador.findMany({
+            where: { Nro_Equipo: equipo.Nro_Equipo },
+            select: {
+                DNI_Jugador: true,
+                Nro_Socio: true,
+                Telefono: true,
+                Foto: true,
+                Persona: {
+                    select: {
+                        Nombre: true,
+                        Apellido: true,
+                    },
+                },
+            },
+        });
+
+        if (jugadores.length === 0) {
+            return res.status(404).json({ message: 'No hay jugadores asociados a este equipo.' });
+        }
+
+        // Devolver el equipo y los jugadores asociados
+        res.status(200).json({
+            equipo: {
+                Nro_Equipo: equipo.Nro_Equipo,
+                Nombre: equipo.Nombre,
+            },
+            jugadores,
+        });
+    } catch (error) {
+        console.error('Error al obtener jugadores del equipo:', error);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+});
+
 router.put('/confirmar_jugador', async (req, res) => {
 
 });
