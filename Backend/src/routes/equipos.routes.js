@@ -221,7 +221,40 @@ router.get('/equipo_jugadores', async (req, res) => {
 
 
 router.put('/confirmar_jugador', async (req, res) => {
+    try {
+        const { DNI_Jugador, Nro_Socio } = req.body;
 
+        // Validar que se proporcionaron los datos necesarios
+        if (!DNI_Jugador || !Nro_Socio) {
+            return res.status(400).json({ error: 'El DNI del jugador y el número de socio son obligatorios' });
+        }
+
+        // Buscar y actualizar el jugador
+        const jugadorActualizado = await prisma.jugador.update({
+            where: {
+                DNI_Jugador_Nro_Socio: {
+                    DNI_Jugador: DNI_Jugador,
+                    Nro_Socio: Nro_Socio
+                }
+            },
+            data: {
+                Nro_Equipo: null
+            }
+        });
+
+        if (!jugadorActualizado) {
+            return res.status(404).json({ error: 'No se encontró el jugador' });
+        }
+
+        res.json({ 
+            mensaje: 'Jugador actualizado exitosamente',
+            jugador: jugadorActualizado 
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al actualizar el jugador' });
+    }
 });
 
 export default router
