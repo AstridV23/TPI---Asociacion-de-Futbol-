@@ -242,6 +242,7 @@ router.get('/equipo_jugadores', async (req, res) => {
     }
 });
 
+
 router.put('/confirmar_jugador', async (req, res) => {
     try {
         const { DNI_Jugador, Nro_Socio } = req.body;
