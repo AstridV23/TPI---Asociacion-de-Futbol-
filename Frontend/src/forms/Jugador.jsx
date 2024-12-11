@@ -20,14 +20,14 @@ function Jugador() {
     useEffect(() => {
         const fetchEquipos = async () => {
             try {
-                const response = await api.get("traerEquipos");
+                const response = await api.get("equipos_mostrar");
                 setEquipos(response.data);
             } catch (error) {
                 console.error("Error al cargar equipos:", error);
             }
         };
         fetchEquipos();
-    }, []);
+    }, );
 
     const onSubmit = async (data) => {
         const formData = {

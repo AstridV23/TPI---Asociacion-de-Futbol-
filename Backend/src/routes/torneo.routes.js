@@ -25,19 +25,6 @@ router.post('/torneo', async (req, res) => {
             });
         }
 
-        /*
-        // Verificar si ya existe un torneo con el mismo nombre
-        const torneoExistente = await prisma.torneo.findUnique({
-            where: { Nombre }
-        });
-
-        if (torneoExistente) {
-            return res.status(409).json({ 
-                error: 'Ya existe un torneo con este nombre' 
-            });
-        }
-        */
-
         // Crear nuevo torneo en la base de datos
         const nuevoTorneo = await prisma.torneo.create({
             data: {
@@ -91,7 +78,6 @@ router.get('/torneo', async (req, res) => {
     try {
         const torneos = await prisma.torneo.findMany({
             select: {
-                //ID: true,
                 Nombre: true,
                 Fecha_Inicio: true,
                 Fecha_Fin: true,

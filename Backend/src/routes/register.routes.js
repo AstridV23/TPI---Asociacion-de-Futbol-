@@ -74,9 +74,68 @@ router.post('/register_persona', async (req, res) => {
 });
 
   // registra un jugador
-router.post('/register_jugador', async (req, res) => {
+  router.post('/register_jugador', async (req, res) => {
+    try {
+        // Extraer los datos del cuerpo de la solicitud
+        const { DNI_Jugador, Nro_Socio, Nro_Equipo, Telefono } = req.body;
 
+        // Validar campos obligatorios
+        if (!DNI_Jugador || !Nro_Socio || !Telefono) {
+            return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+        }
+
+        // Verificar si el DNI existe en la tabla Persona
+        const personaExistente = await prisma.persona.findUnique({
+            where: { DNI: DNI_Jugador },
+        });
+
+        if (!personaExistente) {
+            return res.status(404).json({ error: 'El DNI proporcionado no está registrado en la tabla Persona.' });
+        }
+
+        // Verificar si el jugador ya existe
+        const jugadorExistente = await prisma.jugador.findUnique({
+            where: {
+                DNI_Jugador_Nro_Socio: {
+                    DNI_Jugador,
+                    Nro_Socio,
+                },
+            },
+        });
+
+        if (jugadorExistente) {
+            return res.status(409).json({ error: 'El jugador ya está registrado.' });
+        }
+
+        // Verificar que el equipo exista si se proporciona Nro_Equipo
+        if (Nro_Equipo) {
+            const equipoExistente = await prisma.equipo.findUnique({
+                where: { Nro_Equipo },
+            });
+
+            if (!equipoExistente) {
+                return res.status(404).json({ error: 'El equipo especificado no existe.' });
+            }
+        }
+
+        // Crear el jugador en la base de datos
+        const nuevoJugador = await prisma.jugador.create({
+            data: {
+                DNI_Jugador,
+                Nro_Socio,
+                Nro_Equipo,
+                Telefono,
+            },
+        });
+
+        // Responder con el jugador creado
+        res.status(201).json(nuevoJugador);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Hubo un error al registrar el jugador.' });
+    }
 });
+
 
 // trae todas las personas
 router.get('/personas', async (req, res) => {

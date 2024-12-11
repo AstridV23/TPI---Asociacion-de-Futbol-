@@ -31,7 +31,7 @@ router.post('/division', async (req, res) => {
 });
 
 // trae todas las divisiones
-router.get('/division', async (req, res) => {
+router.get('/divisiones', async (req, res) => {
     try {
 
         const divisiones = await prisma.division.findMany();

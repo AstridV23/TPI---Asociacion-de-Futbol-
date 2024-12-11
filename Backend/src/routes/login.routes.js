@@ -9,6 +9,7 @@ const prisma = new PrismaClient()
 
 dotenv.config()
 
+// busca al usuario registrado
 router.post('/login', async (req, res) => {
     try {
       const { DNI, Contrasena } = req.body;
@@ -53,6 +54,6 @@ router.post('/login', async (req, res) => {
   
       res.status(500).json({ error: 'Error interno del servidor' });
     }
-  });
+});
 
 export default router
