@@ -75,7 +75,7 @@ router.post('/equipo', async (req, res) => {
 
         res.status(201).json({
             ...nuevoEquipo,
-            mensaje: `El equipo ha sido asignado a la categoría correspondiente a la edad ${edadReal} años`
+            mensaje: `El equipo ha sido creado correctamente.`
         });
     } catch (error) {
         console.error(error);
@@ -203,7 +203,7 @@ router.get('/equipos_mostrar', async (req, res) => {
 
 // trae todos los jugadores de un equipo buscado por un dni de representante
 router.get('/equipo_jugadores', async (req, res) => {
-    const { dni_representante } = req.query;
+    const { dni_representante } = req.body;
 
     // Validar el parámetro recibido
     if (!dni_representante) {
@@ -213,7 +213,7 @@ router.get('/equipo_jugadores', async (req, res) => {
     try {
         // Buscar el primer equipo por DNI_Representante
         const equipo = await prisma.equipo.findFirst({
-            where: { DNI_Representante: parseInt(dni_representante) },
+            where: { DNI_Representante: dni_representante },
             select: {
                 Nro_Equipo: true, // Obtener el número de equipo
                 Nombre: true,     // Opcional: incluir el nombre del equipo
