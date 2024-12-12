@@ -43,11 +43,12 @@ function Jugador() {
             ...data,
             DNI_Jugador: dni,
             Nro_Socio: parseInt(data.Nro_Socio),
-            Nro_equipo: parseInt(data.Nro_equipo),
-            Telefono: parseInt(data.Telefono)
+            Nro_Equipo: parseInt(data.Nro_Equipo),
+            Telefono: data.Telefono
         };
 
         try {
+            console.log(formData);
             const response = await api.post("registrar_jugador", formData);
             if (response.status === 201 || response.status === 200) {
                 // Manejar éxito
@@ -80,7 +81,7 @@ function Jugador() {
             </h1>
 
             <Controller
-                name="Nro_equipo"
+                name="Nro_Equipo"
                 control={control}
                 rules={{ required: "Equipo es necesario" }}
                 render={({ field }) => (
@@ -92,12 +93,12 @@ function Jugador() {
                             defaultValue={field.value} // Asegura que el valor seleccionado sea el valor del equipo
                         >
                             {equipos.map((equipo) => (
-                                <MenuItem key={equipo.Nro_equipo} value={equipo.Nro_equipo}>
-                                    {`${equipo.Nombre} (Equipo ${equipo.Nro_equipo})`}
+                                <MenuItem key={equipo.Nro_Equipo} value={equipo.Nro_Equipo}>
+                                    {`${equipo.Nombre} (Equipo ${equipo.Nro_Equipo})`}
                                 </MenuItem>
                             ))}
                         </Select>
-                        {errors.Nro_equipo && (
+                        {errors.Nro_Equipo && (
                             <span style={{ color: '#d32f2f', fontSize: '0.75rem', marginTop: '3px', marginLeft: '14px' }}>
                                 {errors.Nro_equipo.message}
                             </span>

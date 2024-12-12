@@ -16,10 +16,11 @@ function ConfEquipo() {
     }, []);
 
     const traerJugadores = async () => {
+        const formData = {
+            dni_representante: dni.toString()
+        };
         try {
-            const response = await api.get(`equipo_jugadores`, {
-                params: { dni_representante: dni } // DNI se pasa como query param
-            });
+            const response = await api.get(`equipo_jugadores`, formData);
             
             if (response.status === 200) {
                 setJugadores(response.data);

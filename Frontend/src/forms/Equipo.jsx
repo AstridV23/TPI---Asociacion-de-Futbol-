@@ -3,19 +3,20 @@ import React, {useState, useEffect} from 'react'
 import { useForm } from 'react-hook-form'; 
 import { 
   TextField, Button, Box, Paper, Typography,
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Radio, FormControlLabel, RadioGroup 
+  Select, FormControl, InputLabel,
+  MenuItem, FormHelperText
 } from '@mui/material';
 import useAxios from '../hooks/useAxios';
 import { useAuth } from '../hooks/AuthContext';
 
 function Equipo() {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { reset, register, handleSubmit, formState: { errors }, setValue, watch } = useForm();
   const api = useAxios();
   const {dni} = useAuth();
 
   const [mensaje, setMensaje]= useState();
   const [divisiones, setDivisiones] = useState([]);
+  const [selectedDivision, setSelectedDivision] = useState('');
 
   const fetchDivision = async () => {
     try {
@@ -32,11 +33,26 @@ function Equipo() {
     fetchDivision();
   }, []);
 
+  const handleDivisionChange = (event) => {
+    const value = event.target.value;
+    setSelectedDivision(value);
+    setValue('Division_id', value); // Esto registrará el valor en el formulario
+  };
+
   const onSubmit = async (data) => {
+    const formData = {
+      Nombre: data.Nombre,
+      DT: data.Director_Tecnico,
+      Division_Id: parseInt(selectedDivision),
+      DNI_Representante: dni,
+      Categoria_Id: 4
+  };
     try{
-      const response = await api.post(`equipo/${dni}`, data)
-      if (response.status === 200){
-          setMensaje(response.message)
+
+      const response = await api.post(`equipo`, formData)
+      if (response.status === 200 || response.status === 201){
+          console.log("equipo creado correctamente")
+          reset();
       }
     }catch (error){
       console.log(error)
@@ -53,25 +69,24 @@ function Equipo() {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-            <TextField
-              select
-              label="División"
-              fullWidth
-              defaultValue=""
-              slotProps={{
-                inputLabel: { shrink: true }
-              }}
-              {...register('Division_id', { required: 'Debe seleccionar una división' })}
-              error={!!errors.Division_id}
-              helperText={errors.Division_id?.message}
-            >
-              <option value="">Seleccione una división</option>
-              {divisiones.map((division) => (
-                <option key={division.id} value={division.id}>
-                  {division.Tipo}
-                </option>
-              ))}
-            </TextField>
+            <FormControl fullWidth error={!!errors.Division_id}>
+              <InputLabel>División</InputLabel>
+              <Select
+                label="División"
+                value={selectedDivision}
+                onChange={handleDivisionChange}
+              >
+                <MenuItem value="">Seleccione una división</MenuItem>
+                {divisiones.map((division) => (
+                  <MenuItem key={division.Division_Id} value={division.Division_Id}>
+                    {division.Tipo}
+                  </MenuItem>
+                ))}
+              </Select>
+              {errors.Division_id && (
+                <FormHelperText>{errors.Division_id.message}</FormHelperText>
+              )}
+            </FormControl>
 
             <TextField
               label="Nombre del director tecnico"
