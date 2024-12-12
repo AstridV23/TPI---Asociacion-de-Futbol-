@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../hooks/AuthContext";
 import { useNavigate } from "react-router-dom"; 
 import useAxios from '../hooks/useAxios'
+import { toast } from "react-toastify";
 
 function Inicio() {
     const {register, handleSubmit, formState:{errors, isSubmitting}} = useForm();
@@ -27,6 +28,7 @@ function Inicio() {
              // Chequear si la estructura de la respuesta es la esperada
             if (response.status === 200 && response.data) {
                const { DNI, Rol } = response.data;
+               toast.success("Secion iniciada correctamente!")
   
                // Guarda el token y el rol en el contexto usando el hook useAuth
                login(Rol, DNI);
@@ -38,6 +40,7 @@ function Inicio() {
              }
         
            } catch (error) {
+                toast.error("Error al inicar secion");
              // Verifica si el error es de red o falta de respuesta
              if (!error?.response) {
                setError("root", {
@@ -51,7 +54,6 @@ function Inicio() {
               });
             }
            }
-        navigate('/inscripciones')
     }
 
     return (

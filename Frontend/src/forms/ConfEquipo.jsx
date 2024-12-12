@@ -21,6 +21,7 @@ function ConfEquipo() {
             
             if (response.status === 200) {
                 setJugadores(response.data.jugadores);
+                console.log(response.data)
                 setExiste(true);
             } else if (response.status === 404) {
                 setExiste(false);
@@ -52,11 +53,11 @@ function ConfEquipo() {
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                         {jugadores.map((jugador) => (
                             <CardJugador
-                                key={jugador.Dni_Jugador}
-                                Apellido={jugador.Apellido}
-                                Nombre={jugador.Nombre}
-                                Dni_Jugador={jugador.Dni_Jugador}
-                                Nro_socio={jugador.Nro_socio}
+                                key={jugador.DNI_Jugador}
+                                Apellido={jugador.Persona.Apellido}
+                                Nombre={jugador.Persona.Nombre}
+                                Dni_Jugador={jugador.DNI_Jugador}
+                                Nro_socio={jugador.Nro_Socio}
                             />
                         ))}
                     </Box>

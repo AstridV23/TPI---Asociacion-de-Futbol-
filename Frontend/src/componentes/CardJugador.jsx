@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import useAxios from '../hooks/useAxios';
 import { Button, Card, Typography, Box } from '@mui/material';
+import { toast } from 'react-toastify';
 
 function CardJugador({ Apellido, Nombre, Dni_Jugador, Nro_socio }) {
     const [eliminado, setEliminado] = useState(false);
@@ -8,17 +9,28 @@ function CardJugador({ Apellido, Nombre, Dni_Jugador, Nro_socio }) {
 
     const eliminar = async () => {
         try {
-            const response = await api.post(`rechazar/${Dni_Jugador}`);
-            if (response.status === 200) {
+            const dataJugador = {
+                DNI_Jugador: parseInt(Dni_Jugador),
+                Nro_Socio: parseInt(Nro_socio)
+            };
+
+            console.log(dataJugador)
+
+            const response = await api.post('confirmar_jugador', JSON.stringify(dataJugador));
+            console.log(response)
+
+            if (response.status === 200 || response.status === 201 ) {
                 setEliminado(true);
-            } 
+                toast.success("Jugador rechazado correctamente")
+            }
         } catch (error) {
             console.error('Error al eliminar jugador:', error);
+            toast.error("Error al eliminar jugador")
         }
     }
 
     return (
-        <Card 
+        <Card
             sx={{
                 display: 'flex',
                 justifyContent: 'space-between',
@@ -31,9 +43,9 @@ function CardJugador({ Apellido, Nombre, Dni_Jugador, Nro_socio }) {
         >
             <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                 {!eliminado && (
-                    <Button 
-                        variant="contained" 
-                        color="error" 
+                    <Button
+                        variant="contained"
+                        color="error"
                         onClick={eliminar}
                         sx={{ minWidth: '100px' }}
                     >

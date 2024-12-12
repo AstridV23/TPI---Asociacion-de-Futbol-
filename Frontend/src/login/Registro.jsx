@@ -3,6 +3,7 @@ import { Box, TextField, FormControl, InputLabel, MenuItem, Select, Typography, 
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import useAxios from "../hooks/useAxios";
+import {  toast } from 'react-toastify';
 
 function Registro() {
     const navigate = useNavigate();
@@ -38,6 +39,7 @@ function Registro() {
             const response = await api.post("register_persona", formData);
 
             if (response.status === 201 || response.status === 200 ) {
+                toast.success("Cuenta creada correctamente!")
                 navigate('/');
             }
         } catch (error) {
@@ -50,6 +52,7 @@ function Registro() {
                     message: "Error inesperado durante el registro",
                 });
             }
+            toast.error("Error al registrarse");
         }
     };
 

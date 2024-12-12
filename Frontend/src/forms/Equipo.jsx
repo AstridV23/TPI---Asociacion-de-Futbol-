@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import useAxios from '../hooks/useAxios';
 import { useAuth } from '../hooks/AuthContext';
+import { toast } from 'react-toastify';
 
 function Equipo() {
   const { reset, register, handleSubmit, formState: { errors }, setValue, watch } = useForm();
@@ -50,11 +51,12 @@ function Equipo() {
 
       const response = await api.post(`equipo`, formData)
       if (response.status === 200 || response.status === 201){
-          console.log("equipo creado correctamente")
+          toast.success("Se creo el equipo correctamente!");
           reset();
       }
     }catch (error){
       console.log(error)
+      toast.error("No se pudo crear al equipo")
 
     }
     

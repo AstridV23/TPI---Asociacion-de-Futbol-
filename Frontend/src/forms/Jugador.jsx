@@ -3,6 +3,7 @@ import { Box, TextField, FormControl, InputLabel, MenuItem, Select, Typography, 
 import { useForm, Controller } from "react-hook-form";
 import useAxios from "../hooks/useAxios";
 import { useAuth } from "../hooks/AuthContext";
+import {  toast } from 'react-toastify';
 
 function Jugador() {
     const [equipos, setEquipos] = useState([]);
@@ -10,6 +11,7 @@ function Jugador() {
     const { dni } = useAuth();
     
     const {
+        reset,
         register,
         handleSubmit,
         control,
@@ -24,7 +26,8 @@ function Jugador() {
                 const response = await api.get(`equipos_compatibles`, {
                     params: { dni_jugador } 
                 });
-                setEquipos(response.data); // Setea los equipos si no hay error
+                setEquipos(response.data);
+                if(response.data.length<1) toast.error("No hay equipos compatibles con tu edad") // Setea los equipos si no hay error
             } catch (error) {
                 if (error.response && error.response.status === 404) {
                     console.error("No existen equipos correspondientes para tu edad.");
@@ -51,14 +54,15 @@ function Jugador() {
             console.log(formData);
             const response = await api.post("registrar_jugador", formData);
             if (response.status === 201 || response.status === 200) {
-                // Manejar éxito
-                console.log("Jugador registrado exitosamente");
+                toast.success("Solicitud enviada correctamente!");
+                reset();
             }
         } catch (error) {
             setError("root", {
                 message: "Error al registrar jugador"
             });
             console.error("Error al registrar al jugador:", error);
+            toast.error("Ocurrio un poprblema")
         }
     };
 
