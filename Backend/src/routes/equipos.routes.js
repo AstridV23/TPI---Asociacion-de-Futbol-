@@ -7,10 +7,10 @@ const prisma = new PrismaClient()
 // crea un equipo
 router.post('/equipo', async (req, res) => {
     try {
-        const { Nombre, DT, Division_Id, DNI_Representante, Categoria_Id } = req.body;
+        const { Nombre, DT, Division_Id, DNI_Representante } = req.body;
 
         // Validar campos obligatorios
-        if (!Nombre || !DT || !Division_Id || !DNI_Representante || !Categoria_Id) {
+        if (!Nombre || !DT || !Division_Id || !DNI_Representante) {
             return res.status(400).json({ error: 'Faltan campos obligatorios.' });
         }
 
@@ -22,21 +22,35 @@ router.post('/equipo', async (req, res) => {
             return res.status(404).json({ error: 'La división especificada no existe.' });
         }
 
-        // Verificar que el representante existe
-        const representanteExiste = await prisma.persona.findUnique({
-            where: { DNI: DNI_Representante }
+        // Verificar que el representante existe y obtener su fecha de nacimiento
+        const representante = await prisma.persona.findUnique({
+            where: { DNI: DNI_Representante },
+            select: { FechaNacimiento: true }
         });
         
-        if (!representanteExiste) {
+        if (!representante) {
             return res.status(404).json({ error: 'El representante especificado no existe.' });
         }
 
-        // Verificar que la categoría existe
-        const categoriaExiste = await prisma.categoria.findUnique({
-            where: { Categoria_Id: Categoria_Id }
+        // Calcular la edad del representante
+        const fechaNacimiento = new Date(representante.FechaNacimiento);
+        const hoy = new Date();
+        const edad = hoy.getFullYear() - fechaNacimiento.getFullYear();
+        const cumpleanosPasado = 
+            hoy.getMonth() > fechaNacimiento.getMonth() || 
+            (hoy.getMonth() === fechaNacimiento.getMonth() && hoy.getDate() >= fechaNacimiento.getDate());
+        const edadReal = cumpleanosPasado ? edad : edad - 1;
+
+        // Encontrar la categoría correspondiente a la edad
+        const categoria = await prisma.categoria.findFirst({
+            where: {
+                Min_Edad: { lte: edadReal },
+                Max_Edad: { gte: edadReal }
+            }
         });
-        if (!categoriaExiste) {
-            return res.status(404).json({ error: 'La categoría especificada no existe.' });
+
+        if (!categoria) {
+            return res.status(404).json({ error: 'No se encontró una categoría compatible para la edad del representante.' });
         }
 
         // Verificar si ya existe un equipo con el mismo nombre
@@ -55,11 +69,14 @@ router.post('/equipo', async (req, res) => {
                 DT,
                 Division_Id,
                 DNI_Representante,
-                Categoria_Id,
+                Categoria_Id: categoria.Categoria_Id, // Asignar la categoría automáticamente
             },
         });
 
-        res.status(201).json(nuevoEquipo);
+        res.status(201).json({
+            ...nuevoEquipo,
+            mensaje: `El equipo ha sido creado correctamente.`
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Hubo un error al crear el equipo.' });
@@ -186,7 +203,7 @@ router.get('/equipos_mostrar', async (req, res) => {
 
 // trae todos los jugadores de un equipo buscado por un dni de representante
 router.get('/equipo_jugadores', async (req, res) => {
-    const { dni_representante } = req.query;
+    const { dni_representante } = req.body;
 
     // Validar el parámetro recibido
     if (!dni_representante) {
@@ -196,7 +213,7 @@ router.get('/equipo_jugadores', async (req, res) => {
     try {
         // Buscar el primer equipo por DNI_Representante
         const equipo = await prisma.equipo.findFirst({
-            where: { DNI_Representante: parseInt(dni_representante) },
+            where: { DNI_Representante: dni_representante },
             select: {
                 Nro_Equipo: true, // Obtener el número de equipo
                 Nombre: true,     // Opcional: incluir el nombre del equipo
