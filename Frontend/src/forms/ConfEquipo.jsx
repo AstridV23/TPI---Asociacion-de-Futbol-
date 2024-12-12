@@ -9,27 +9,29 @@ function ConfEquipo() {
     const api = useAxios();
 
     const [jugadores, setJugadores] = useState([]);
-    const [existe, setExiste] = useState();
+    const [existe, setExiste] = useState(false);
 
     useEffect(() => {
         traerJugadores();
     }, []);
 
     const traerJugadores = async () => {
-        const formData = {
-            dni_representante: dni.toString()
-        };
         try {
-            const response = await api.get(`equipo_jugadores`, formData);
+            const response = await api.get('equipo_jugadores', {
+                data: {
+                    dni_representante: parseInt(dni)
+                }
+            });
             
-            if (response.status === 200) {
+            if (response.data) {
                 setJugadores(response.data);
                 setExiste(true);
-            } else if (response.status === 404) {
+            } else {
                 setExiste(false);
             }
         } catch(error) {
             console.error('Error al obtener jugadores:', error);
+            setExiste(false);
         }
     }
 

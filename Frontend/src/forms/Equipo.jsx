@@ -44,8 +44,7 @@ function Equipo() {
       Nombre: data.Nombre,
       DT: data.Director_Tecnico,
       Division_Id: parseInt(selectedDivision),
-      DNI_Representante: dni,
-      Categoria_Id: 4
+      DNI_Representante: dni
   };
     try{
 
