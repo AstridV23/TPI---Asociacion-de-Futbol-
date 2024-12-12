@@ -17,16 +17,12 @@ function ConfEquipo() {
 
     const traerJugadores = async () => {
         try {
-            const response = await api.get('equipo_jugadores', {
-                data: {
-                    dni_representante: parseInt(dni)
-                }
-            });
+            const response = await api.get(`equipo_jugadores/${dni}`);
             
-            if (response.data) {
+            if (response.status === 200) {
                 setJugadores(response.data);
                 setExiste(true);
-            } else {
+            } else if (response.status === 404) {
                 setExiste(false);
             }
         } catch(error) {

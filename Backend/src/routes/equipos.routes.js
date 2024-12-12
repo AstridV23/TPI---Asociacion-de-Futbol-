@@ -202,8 +202,8 @@ router.get('/equipos_mostrar', async (req, res) => {
 });
 
 // trae todos los jugadores de un equipo buscado por un dni de representante
-router.get('/equipo_jugadores', async (req, res) => {
-    const { dni_representante } = req.body;
+router.get('/equipo_jugadores/:dni_representante', async (req, res) => {
+    const { dni_representante } = req.params;
 
     // Validar el parámetro recibido
     if (!dni_representante) {
@@ -213,10 +213,10 @@ router.get('/equipo_jugadores', async (req, res) => {
     try {
         // Buscar el primer equipo por DNI_Representante
         const equipo = await prisma.equipo.findFirst({
-            where: { DNI_Representante: dni_representante },
+            where: { DNI_Representante: parseInt(dni_representante) },
             select: {
-                Nro_Equipo: true, // Obtener el número de equipo
-                Nombre: true,     // Opcional: incluir el nombre del equipo
+                Nro_Equipo: true,
+                Nombre: true,
             },
         });
 
