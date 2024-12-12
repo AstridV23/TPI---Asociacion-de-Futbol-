@@ -20,7 +20,7 @@ function ConfEquipo() {
             const response = await api.get(`equipo_jugadores/${dni}`);
             
             if (response.status === 200) {
-                setJugadores(response.data);
+                setJugadores(response.data.jugadores);
                 setExiste(true);
             } else if (response.status === 404) {
                 setExiste(false);
