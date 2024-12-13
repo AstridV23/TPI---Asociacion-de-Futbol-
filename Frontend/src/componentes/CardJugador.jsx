@@ -9,14 +9,8 @@ function CardJugador({ Apellido, Nombre, Dni_Jugador, Nro_socio }) {
 
     const eliminar = async () => {
         try {
-            const dataJugador = {
-                DNI_Jugador: parseInt(Dni_Jugador),
-                Nro_Socio: parseInt(Nro_socio)
-            };
 
-            console.log(dataJugador)
-
-            const response = await api.post('confirmar_jugador', JSON.stringify(dataJugador));
+            const response = await api.put(`confirmar_jugador/${Dni_Jugador}/${Nro_socio}`);
             console.log(response)
 
             if (response.status === 200 || response.status === 201 ) {

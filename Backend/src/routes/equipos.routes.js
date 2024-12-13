@@ -259,10 +259,10 @@ router.get('/equipo_jugadores/:dni_representante', async (req, res) => {
     }
 });
 
-
-router.put('/confirmar_jugador', async (req, res) => {
+// Cambiar de PUT a una ruta con parámetros
+router.put('/confirmar_jugador/:DNI_Jugador/:Nro_Socio', async (req, res) => {
     try {
-        const { DNI_Jugador, Nro_Socio } = req.body;
+        const { DNI_Jugador, Nro_Socio } = req.params;
 
         // Validar que se proporcionaron los datos necesarios
         if (!DNI_Jugador || !Nro_Socio) {
@@ -273,8 +273,8 @@ router.put('/confirmar_jugador', async (req, res) => {
         const jugadorActualizado = await prisma.jugador.update({
             where: {
                 DNI_Jugador_Nro_Socio: {
-                    DNI_Jugador: DNI_Jugador,
-                    Nro_Socio: Nro_Socio
+                    DNI_Jugador: parseInt(DNI_Jugador), // Convertir a número
+                    Nro_Socio: parseInt(Nro_Socio)      // Convertir a número
                 }
             },
             data: {
