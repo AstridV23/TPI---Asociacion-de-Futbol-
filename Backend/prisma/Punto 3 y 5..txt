@@ -1,0 +1,198 @@
+
+-- INSERTAR PERSONAS CON ROLES
+
+INSERT INTO Persona (DNI, FechaNacimiento, Direccion, Apellido, Nombre, Rol, Contrasena, Email) VALUES
+    (10000000, '1990-02-15', 'Calle Primavera 12', 'Pérez', 'Laura', 'Jugador', 'laura112', 'Laura@mail.com'),
+    (10000001, '1985-05-20', 'Avenida Central 34', 'Gómez', 'Carlos', 'Jugador', 'carlos223', 'Carlos@mail.com'),
+    (10000002, '1998-09-10', 'Pasaje Flores 56', 'Martínez', 'Ana', 'Arbitro', 'ana334', 'Ana@mail.com'),
+    (10000003, '2000-12-01', 'Callejón Luna 78', 'Rodríguez', 'José', NULL, 'jose445', 'José@mail.com'),
+    (10000004, '1995-03-30', 'Boulevard Sol 90', 'López', 'Marta', 'Jugador', 'marta556', 'Marta@mail.com'),
+    (10000005, '1987-07-25', 'Calle Pinos 102', 'Fernández', 'Javier', NULL, 'javier667', 'Javier@mail.com'),
+    (10000006, '1992-11-11', 'Avenida Bosques 114', 'Torres', 'Carmen', 'Arbitro', 'carmen778', 'Carmen@mail.com'),
+    (10000007, '1988-04-05', 'Pasaje Estrella 126', 'Sosa', 'Luis', 'Jugador', 'luis889', 'Luis@mail.com'),
+    (10000008, '1996-06-17', 'Calle Rosas 138', 'Castro', 'Paula', NULL, 'paula990', 'Paula@mail.com'),
+    (10000009, '1994-08-08', 'Avenida Lirios 150', 'Hernández', 'Miguel', 'Jugador', 'miguel101', 'Miguel@mail.com'),
+    (10000010, '1991-10-22', 'Boulevard Jardín 162', 'Vega', 'Sofía', 'Jugador', 'sofia121', 'Sofía@mail.com'),
+    (10000011, '2007-08-08', 'Avenida Lirios 150', 'Hernández', '1', 'Jugador', 'miguel101', 'Miguel@mail.com'),
+    (10000012, '2008-10-22', 'Boulevard Jardín 162', 'Vega', 'Arnold', 'Jugador', 'Arnold121', 'Arnold@mail.com'),
+    (10000013, '2007-08-08', 'Avenida Lirios 150', 'Hernández', 'Damaris', 'Jugador', 'Damaris101', 'Damaris@mail.com'),
+    (10000014, '2009-10-22', 'Boulevard Jardín 162', 'Vega', 'Roberto', 'Jugador', 'Roberto121', 'Roberto@mail.com'),
+    (10000015, '1988-04-05', 'Pasaje 516 126', 'Sosa', 'Pedro', 'Jugador', 'Pedro889', 'Pedro@mail.com');
+
+
+
+
+--INSERTAR CATEGORIAS
+
+INSERT INTO Categoria (Tipo, Descripcion, Min_Edad, Max_Edad) VALUES
+    ('Juvenil', 'Categoría para jugadores menores de 18 años', 10, 17),
+    ('Adulto', 'Categoría para jugadores mayores de 18 años', 18, 34),
+    ('Veterano', 'Categoría para jugadores mayores de 35 años', 35, 70);
+
+
+-- INSERTAR Division
+
+INSERT INTO Division (Tipo) VALUES
+    ('A'),
+    ('B'),
+    ('C'),
+    ('D'),
+    ('E');
+
+
+-- INSERTAR EQUIPOS CON CATEGORIA, DIVISION Y REPRESENTANTE
+
+INSERT INTO Equipo (Nombre, DT, Categoria_Id, DNI_Representante, Division_Id) VALUES
+    ('Los Carpinchos', 'Pepe', 1, 10000011, 1),
+    ('Las Palomas', 'Pepa', 1, 10000012, 1),
+    ('Los Yacare', 'Juan', 2, 10000000, 2),
+    ('Los Leones', 'Marcos', 3, 10000001, 3),
+    ('Las Águilas', 'Paula', 1, 10000013, 2),
+    ('Las Tortugas', 'Patricia', 2, 10000004, 3),
+    ('Los Tigres', 'Luis', 3, 10000007, 1),
+    ('Los Jaguares', 'Carlos', 3, 10000015, 1),
+    ('Las Panteras', 'Elena', 1, 10000014, 2),
+    ('Las Panteras 2', 'Rodrigo', 2, 10000009, 3);
+    
+
+-- INSERTAR LAS PERSONAS CON ROL DE JUGADOR A LA TABLA JUGADOR
+
+INSERT INTO Jugador (DNI_Jugador, Nro_Socio, Nro_Equipo, Telefono, Foto) VALUES
+(10000000, 100, 15, '3256545256', NULL),
+(10000001, 101, 16, '3256545257', NULL),
+(10000004, 102, 18, '3256545258', NULL),
+(10000007, 103, 19, '3256545259', NULL),
+(10000009, 104, 22, '3256545260', NULL),
+(10000010, 105, 15, '3256545261', NULL),
+(10000011, 106, 13, '3256545262', NULL),
+(10000012, 107, 14, '3256545263', NULL),
+(10000013, 108, 17, '3256545264', NULL),
+(10000014, 109, 21, '3256545265', NULL),
+(10000015, 110, 20, '3256545266', NULL);
+
+
+--PUNTO 3
+--PUNTO 3.1 Creación de torneos con especificación de categorías y divisiones.
+
+INSERT INTO Torneo (Categoria_Id, Division_Id, DNI_Encargado, Nombre, Fecha_Inicio, Fecha_Fin, Fecha_Inicio_Inscripcion, Fecha_Fin_Inscripcion, Cant_ruedas) VALUES
+    (1, 1, 10000003, 'Torneo Apertura 2025', '2025-01-01', '2025-06-15', '2024-12-01', '2024-12-31', 3),
+    (2, 2, 10000003, 'Torneo Apertura 2025', '2025-01-01', '2025-06-15', '2024-12-01', '2024-12-31', 4),
+    (3, 3, 10000003, 'Torneo Apertura 2025', '2025-01-01', '2025-06-15', '2024-12-01', '2024-12-31', 6),
+    (1, 2, 10000005, 'Torneo Del Año ', '2025-01-01', '2025-12-31', '2024-12-01', '2024-12-31', 5),
+    (2, 3, 10000005, 'Torneo Cuatrimestral', '2025-01-01', '2025-05-15', '2024-12-01', '2024-12-31', 2),
+    (3, 1, 10000005, 'Torneo Del Mes', '2025-01-01', '2025-02-01', '2024-12-01', '2024-12-31', 1);
+
+
+
+-- PUNTO 3.2
+
+--Inscripción de equipos en el torneo de acuerdo con la categoría y división.
+--Se Cargan los equipos y Torneos donde coincidan sus respectivas categoria y division
+
+INSERT INTO Participa (Torneo_ID, Nro_Equipo)
+SELECT Torneo_ID, Nro_Equipo
+FROM Torneo JOIN Equipo
+ON Torneo.Categoria_Id = Equipo.Categoria_Id AND Torneo.Division_Id = Equipo.Division_Id;
+
+
+
+--Ver Equipos que estan participando en un torneo y cual es el torneo en el que participa
+
+SELECT Equipo.Nombre AS 'Equipos', Equipo.Categoria_Id, Equipo.Division_Id, Torneo.Nombre AS 'Torneos', Torneo.Categoria_Id, Torneo.Division_Id
+FROM Participa, Equipo, Torneo
+WHERE Participa.Torneo_id = Torneo.Torneo_ID AND Participa.Nro_Equipo = Equipo.Nro_Equipo;
+
+
+
+
+------- PUNTO 5
+
+
+--Carga de los arbitros a la tabla arbitro
+INSERT INTO Arbitro(DNI_Arbitro, TieneCertificacion, NivelExperiencia) VALUES
+(10000002, 1, 2),
+(10000006, 1, 3);
+
+--Carga de fechas sin ruedas
+INSERT INTO Fecha_Torneo (Nro_fecha, Date, Rueda_id)
+VALUES
+    (1, '2025-01-25', NULL),
+    (2, '2025-01-20', NULL),
+    (3, '2025-01-15', NULL),
+    (4, '2025-01-10', NULL),
+    (5, '2025-01-05', NULL);
+
+--Carga de canchas
+INSERT INTO Cancha (Direccion, Nombre)
+VALUES
+    ('Avenida Siempreviva 123', 'Municipal'),
+    ('Calle de los Sueños 456', 'Deportivo'),
+    ('Carrera Principal 789', 'Universitario'),
+    ('Callejón del Golf 10', 'Privado'),
+    ('Plaza Central', 'Comunitario');
+    
+
+SELECT * FROM CANCHA;
+SELECT * FROM Fecha_Torneo;
+
+
+
+--5.1
+-- Asignar fechas, canchas y árbitros a los encuentros
+INSERT INTO Encuentro (DNI_Arbitro, Cancha_Id, Hora, Fecha_id)
+VALUES 
+    (10000002, 1, '15:00', 1), -- Encuentro 1
+    (10000002, 2, '17:00', 2), -- Encuentro 2
+    (10000006, 3, '19:00', 3); -- Encuentro 3
+
+
+
+--Ver encuentros asignados
+SELECT E.Encuentro_Id, A.DNI_Arbitro, P.Nombre AS 'Nombre del Arbitro', P.Apellido 'Apellido del Arbitro', C.Nombre AS Cancha, FT.Date AS Fecha, E.Hora
+FROM 
+    Encuentro E
+JOIN 
+    Arbitro A ON E.DNI_Arbitro = A.DNI_Arbitro
+JOIN 
+    Persona P ON A.DNI_Arbitro = P.DNI
+JOIN 
+    Cancha C ON E.Cancha_Id = C.Cancha_Id
+JOIN 
+    Fecha_Torneo FT ON E.Fecha_id = FT.Fecha_id
+ORDER BY 
+    FT.Date, E.Hora;
+
+
+--Consultar Canchas
+SELECT * FROM Cancha;
+
+--Consutlar arbitros
+SELECT DNI_Arbitro, Persona.Nombre, Persona.Apellido
+FROM 
+    Arbitro
+JOIN 
+    Persona ON Persona.DNI = Arbitro.DNI_Arbitro
+ORDER BY 
+    Nombre;
+
+
+--Modificar una chanca
+UPDATE Cancha
+SET 
+    Nombre = 'Cancha Modificada',
+    Direccion = 'Av. Modificacion 456'
+WHERE 
+    Cancha_Id = 1;
+
+
+--Modificar un arbitro
+UPDATE Arbitro
+SET 
+    NivelExperiencia = 5
+WHERE 
+    DNI_Arbitro = 10000006;
+
+
+
+
+
